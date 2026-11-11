@@ -115,6 +115,19 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 .toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--bg3);border:1px solid var(--cyan);
   font-family:var(--mono);font-size:12px;padding:10px 16px;z-index:100;border-radius:2px;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.on{opacity:1}
+.sv h2{font-size:30px;font-weight:500;margin:34px 0 4px}
+.sv .lead{color:var(--txt2);font-size:18px;margin-bottom:6px}
+.sv label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);margin:20px 0 8px}
+.grid{display:flex;flex-wrap:wrap;gap:6px}
+.nb{min-width:36px;height:36px;padding:0 8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--txt2);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:2px}
+.nb.on{background:var(--cyan);color:#001018;border-color:var(--cyan);box-shadow:0 0 12px rgba(75,198,255,.4)}
+.nb.on.pn{background:var(--mag);border-color:var(--mag);color:#1a0016;box-shadow:0 0 12px rgba(255,75,216,.4)}
+.tag{padding:8px 11px;border:1px solid var(--line);color:var(--txt2);font-family:var(--mono);font-size:11px;border-radius:2px;background:rgba(255,255,255,.03)}
+.tag.on{border-color:var(--mag);color:#fff;background:rgba(255,75,216,.18)}
+.exq{margin-bottom:12px}.exq .en{font-size:18px;margin-bottom:6px}
+.exq .grid .nb{flex:1}
+.nb.fac.on{background:#1D9E75;border-color:#1D9E75;color:#fff}.nb.dur.on{background:#D85A30;border-color:#D85A30;color:#fff}
+.sv input[type=text]{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--txt);padding:12px;font-family:var(--serif);font-size:17px;border-radius:2px}
 .foot{font-family:var(--mono);font-size:10px;color:var(--txt3);text-align:center;margin-top:30px;letter-spacing:.06em;line-height:1.8}
 .foot a{color:var(--txt2)}
 .hide{display:none!important}
@@ -128,7 +141,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '10 nov. 20 h 50';
+const APP_VERSION = '11 nov. 07 h 40';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -140,7 +153,7 @@ const CACHE_KEY = 'vesper_cache_v1', PEND_KEY = 'vesper_pending_v1', LUE_KEY = '
 
 // ───────────────────── PASSAGES (niveau 0) ─────────────────────
 // Mêmes séances que la semaine de reprise de Ma Vie. Index = (scène − 1) mod 9.
-const mp = (f, nom, d) => ({ mp3: f, nom, duree: d });
+const mp = (f, nom, d, ex) => ({ mp3: f, nom, duree: d, ex: ex || null });
 const tm = (nom, d, detail) => ({ timer: nom, duree: d, detail: detail || '' });
 const ps = d => ({ pause: d });
 const WARM = mp('warmup.mp3', 'Échauffement Wing Chun', 410);
@@ -153,7 +166,7 @@ const PASSAGES = [
   { type: 'Reprise — Formes + Marche', steps: [tm('Marche — 30 min', 1800, 'Sans charge · rythme confortable · note la tension cervicale'), ps(30), mp('cervical-circuit.mp3', 'Circuit cervical', 310)] },
   { type: 'Reprise — Physio B', steps: [WARM, ps(30), PHB] },
   { type: 'Reprise — Formes', steps: [WARM, ps(30), KICK, ps(30), FORME('Chum Kiu'), ps(20), FORME('Biu Jee'), ps(30), PHA] },
-  { type: 'Reprise — Physio + Gainage + Marche', steps: [WARM, ps(30), PHB, ps(30), mp('core-circuit.mp3', 'Circuit gainage', 526)] },
+  { type: 'Reprise — Physio + Gainage + Marche', steps: [WARM, ps(30), PHB, ps(30), mp('core-circuit.mp3', 'Circuit gainage', 526, [['ex-022','Hollow body hold'],['ex-023','Levées de jambes'],['ex-050','Dead bug']])] },
   { type: 'Reprise — Physio + Gainage + Marche', steps: [tm('Marche — 35 min', 2100, 'Sans charge · rythme confortable'), ps(30), mp('cooldown.mp3', 'Retour au calme', 531)] },
   { type: 'Reprise — Formes + Armes', steps: [WARM, ps(30), FORME('Siu Lim Tao'), ps(20), FORME('Baat Jaam Do'), ps(20), tm('Baat Jaam Do — Ip Man', 420, '')] },
   { type: 'Reprise — Marche longue', steps: [tm('Marche longue — 40 min', 2400, 'Ou sortie de 4-5 km · sans charge · note la tension cervicale à 30 min')] },
@@ -190,7 +203,8 @@ async function flushPending() {
   for (const it of S.pending) {
     try {
       const res = it.kind === 'seance' ? await api({ action: 'saveWcSeance', data: JSON.stringify(it.payload) })
-                                       : await api({ action: 'saveSession', session: JSON.stringify(it.payload) });
+                : it.kind === 'journal' ? await api({ action: 'save', entry: JSON.stringify(it.payload) })
+                : await api({ action: 'saveSession', session: JSON.stringify(it.payload) });
       if (res && res.ok === false) reste.push(it);
     } catch (e) { reste.push(it); }
   }
@@ -206,6 +220,7 @@ async function sync() {
     let ws = normSeances(d.wcSeances), ss = d.sessions || [];
     // ce qui n'est pas encore parti reste visible
     S.pending.forEach(p => {
+      if (p.kind === 'journal') return;
       if (p.kind === 'seance' && !ws.some(x => String(x.id) === String(p.payload.id))) ws.push(p.payload);
       if (p.kind === 'session' && !ss.some(x => String(x.id) === String(p.payload.id))) ss.push(p.payload);
     });
@@ -262,12 +277,21 @@ async function marquerSobre(jour) {
   S.pending.push({ kind: 'session', payload: session }); jset(PEND_KEY, S.pending);
   await flushPending(); toast(S.pending.length ? 'Sauvegardé ici — envoi plus tard' : 'Jour sans alcool ✓'); render();
 }
-async function enregistrerSeance(n) {
+async function enregistrerSeance(n, rpe, suivi) {
   if (Date.now() - (S._derniere || 0) < 5000) return; S._derniere = Date.now();
   const p = passageDe(n);
-  const seance = { id: 'S' + Date.now(), date: today(), type: p.type, statut: 'Complété', rpe: null, duree: dureeMin(p), log: [] };
+  const seance = { id: 'S' + Date.now(), date: today(), type: p.type, statut: 'Complété', rpe: rpe || null, duree: dureeMin(p), log: [] };
   S.wcSeances.push(seance); saveCache();
-  S.pending.push({ kind: 'seance', payload: seance }); jset(PEND_KEY, S.pending);
+  S.pending.push({ kind: 'seance', payload: seance });
+  if (suivi) {   // même entrée de journal que le « post-timer » de Ma Vie
+    const d = new Date();
+    const entry = { id: Date.now() + 1, date: today(), time: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'),
+      pain: suivi.pain, locations: suivi.locs, medications: [], exercises: [p.type], duration: dureeMin(p), intensity: rpe || null, events: [],
+      notes: suivi.note || ('Post-session ' + p.type),
+      ex_eval: Object.keys(suivi.evals).length ? JSON.stringify(suivi.evals) : null, source: 'post-timer' };
+    S.pending.push({ kind: 'journal', payload: entry });
+  }
+  jset(PEND_KEY, S.pending);
   await flushPending();
   toast(S.pending.length ? 'Sauvegardé ici — envoi plus tard' : 'Séance enregistrée ✓');
 }
@@ -422,8 +446,7 @@ function vPlayInit() { drawPlay(); }
 function drawPlay() {
   const P = S.play, a = $('app'); let h;
   if (P.fini) {
-    h = '<div class="player"><div class="ph">Passage ' + String(P.n).padStart(2, '0') + '</div><div class="fin"><div class="big">Passage accompli</div><p>Tu as tenu. Ce que tu viens de faire existe maintenant, quoi que dise la brume.</p>' +
-        '<button class="btn" onclick="terminer()">Enregistrer la séance</button></div></div>';
+    drawSuivi(); return;
   } else {
     const s = P.steps[P.i], rest = !!s.pause, nom = rest ? 'Respire' : (s.nom || s.timer), nx = P.steps[P.i + 1];
     const left = P.pause ? P.rest : Math.max(0, P.end - Date.now());
@@ -438,8 +461,39 @@ function drawPlay() {
   }
   a.innerHTML = h;
 }
-async function terminer() {
-  const n = S.play.n; stopPlay(); await enregistrerSeance(n); S.play = null;
+// ───────────────────────── SUIVI APRÈS PASSAGE (comme Ma Vie) ─────────────────────────
+const LOCS = [['épaule G','Épaule G'],['épaule D','Épaule D'],['cou/nuque','Cou/nuque'],['bas du dos','Bas du dos'],['genou G','Genou G'],['genou D','Genou D'],['hanche','Hanche']];
+const EX_AVEC_PROGRESSION = new Set(['ex-047','ex-048','ex-049','ex-050','ex-052','ex-014','ex-015','ex-016','ex-017','ex-018','ex-019','ex-020','ex-021','ex-022','ex-023','ex-024','ex-026','ex-027']);
+function drawSuivi() {
+  const P = S.play; P.sv = P.sv || { rpe: null, pain: null, locs: [], evals: {} };
+  const exs = []; const vus = new Set();
+  P.steps.forEach(st => (st.ex || []).forEach(([id, nom]) => { if (EX_AVEC_PROGRESSION.has(id) && !vus.has(id)) { vus.add(id); exs.push([id, nom]); } }));
+  const grid = (cls, from, to, fn) => { let h = ''; for (let i = from; i <= to; i++) h += '<button class="nb ' + cls + '" data-v="' + i + '" onclick="' + fn + '(' + i + ',this)">' + i + '</button>'; return h; };
+  let h = '<div class="player sv"><div class="ph">Passage ' + String(P.n).padStart(2, '0') + '</div><h2>Passage accompli</h2>' +
+    '<p class="lead">Tu as tenu. Comment ton corps l\'a-t-il pris ?</p>' +
+    '<label>Effort perçu (RPE)</label><div class="grid" id="g-rpe">' + grid('', 1, 10, 'svRpe') + '</div>' +
+    '<label>Niveau de douleur maintenant</label><div class="grid" id="g-pain">' + grid('pn', 0, 10, 'svPain') + '</div>' +
+    '<label>Localisation (optionnel)</label><div class="grid">' + LOCS.map(l => '<button class="tag" data-v="' + l[0] + '" onclick="svLoc(this)">' + l[1] + '</button>').join('') + '</div>';
+  if (exs.length) h += '<label>Difficulté par exercice</label>' + exs.map(([id, nom]) =>
+    '<div class="exq"><div class="en">' + esc(nom) + '</div><div class="grid" data-ex="' + id + '">' +
+    ['facile', 'correct', 'dur'].map(v => '<button class="nb ' + (v === 'facile' ? 'fac' : v === 'dur' ? 'dur' : '') + '" data-v="' + v + '" onclick="svEval(\'' + id + '\',\'' + v + '\',this)">' + v + '</button>').join('') + '</div></div>').join('');
+  h += '<label>Note rapide (optionnel)</label><input type="text" id="sv-note" placeholder="ex. légère tension dans le dos…">' +
+       '<button class="btn" id="sv-save" onclick="terminer(false)">Enregistrer</button>' +
+       '<button class="btn ghost" onclick="terminer(true)">Enregistrer la séance sans le suivi</button></div>';
+  $('app').innerHTML = h;
+}
+function svSel(gridId, el) { document.querySelectorAll('#' + gridId + ' .nb').forEach(b => b.classList.toggle('on', b === el)); }
+function svRpe(n, el) { S.play.sv.rpe = n; svSel('g-rpe', el); }
+function svPain(n, el) { S.play.sv.pain = n; svSel('g-pain', el); }
+function svLoc(el) { el.classList.toggle('on'); const v = el.dataset.v, a = S.play.sv.locs, i = a.indexOf(v); if (i >= 0) a.splice(i, 1); else a.push(v); }
+function svEval(id, v, el) { S.play.sv.evals[id] = v; el.parentNode.querySelectorAll('.nb').forEach(b => b.classList.toggle('on', b === el)); }
+async function terminer(sansSuivi) {
+  const P = S.play, n = P.n, sv = P.sv || {};
+  if (!sansSuivi && sv.pain == null) { toast('Choisis un niveau de douleur (ou enregistre sans le suivi).'); return; }
+  const note = ($('sv-note') || {}).value || '';
+  stopPlay();
+  await enregistrerSeance(n, sv.rpe, sansSuivi ? null : { pain: sv.pain, locs: sv.locs || [], evals: sv.evals || {}, note: note.trim() });
+  S.play = null;
   const next = prochaineScene(); S.lues[n] = 1; jset(LUE_KEY, S.lues);
   go(next <= CH.scenes.length ? 'read' : 'home', next <= CH.scenes.length ? next : 0);
 }
