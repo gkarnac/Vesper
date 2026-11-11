@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0714">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Vesper">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Vesper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0714;--bg2:#120a20;--bg3:#1a1030;
+  --txt:#ece4f7;--txt2:rgba(236,228,247,.62);--txt3:rgba(236,228,247,.34);
+  --line:rgba(255,255,255,.08);
+  --cyan:#4bc6ff;--mag:#ff4bd8;--dusk:#ff8a4c;--gold:#f2b66d;
+  --serif:'Cormorant Garamond',Georgia,serif;--mono:'JetBrains Mono',monospace;
+  --fog:.4;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--txt);font-family:var(--serif);min-height:100vh;max-width:520px;margin:0 auto;
+  padding:0 0 calc(40px + env(safe-area-inset-bottom));position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:50;
+  background-image:repeating-linear-gradient(to bottom,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 3px);mix-blend-mode:overlay}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
+
+.top{display:flex;justify-content:space-between;align-items:center;padding:calc(18px + env(safe-area-inset-top)) 18px 10px}
+.logo{font-size:26px;letter-spacing:.32em;font-weight:500;color:var(--txt);text-transform:uppercase}
+.logo i{color:var(--mag);font-style:normal}
+.pill{font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:5px 10px;border:1px solid var(--cyan);color:var(--cyan);
+  border-radius:2px;background:rgba(75,198,255,.08)}
+.pill.err{border-color:var(--mag);color:var(--mag);background:rgba(255,75,216,.08)}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--txt3);padding:0 18px}
+
+.art{position:relative;width:100%;aspect-ratio:400/230;overflow:hidden;background:var(--bg2)}
+.art svg,.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.art .fogv{position:absolute;inset:0;pointer-events:none;opacity:var(--fog);
+  background:linear-gradient(180deg,transparent 20%,rgba(242,182,109,.55) 85%,rgba(242,182,109,.8));mix-blend-mode:screen;animation:drift 14s ease-in-out infinite alternate}
+.art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(180deg,transparent,var(--bg))}
+@keyframes drift{from{transform:translateX(-3%) scale(1.06)}to{transform:translateX(3%) scale(1.06)}}
+
+.wrap{padding:0 18px}
+h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;margin:-34px 0 6px;position:relative;z-index:2}
+.sub{font-family:var(--mono);font-size:11px;color:var(--txt2);letter-spacing:.08em}
+.btn{display:block;width:100%;padding:14px 16px;border:1px solid var(--mag);color:#fff;background:rgba(255,75,216,.12);
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;border-radius:2px;margin-top:16px;
+  box-shadow:0 0 22px rgba(255,75,216,.18)}
+.btn:active{background:rgba(255,75,216,.28)}
+.btn.cy{border-color:var(--cyan);background:rgba(75,198,255,.1);box-shadow:0 0 22px rgba(75,198,255,.15)}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--txt2);box-shadow:none}
+.btn[disabled]{opacity:.35;pointer-events:none}
+
+.dots{display:flex;flex-wrap:wrap;gap:5px;margin:18px 0 6px}
+.dot{flex:none;width:14px;height:14px;border:1px solid var(--line);border-radius:50%;background:transparent}
+.dot.done{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 8px rgba(75,198,255,.5)}
+.dot.cur{border-color:var(--mag);box-shadow:0 0 10px rgba(255,75,216,.6);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 2px rgba(255,75,216,.2)}}
+
+.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));padding:14px 14px;margin-top:18px;border-radius:2px}
+.card h3{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);font-weight:500;margin-bottom:10px}
+.bar{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin:8px 0}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--dusk),var(--gold));transition:width .6s}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.mini{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;color:var(--cyan);border:1px solid var(--cyan);padding:7px 8px;border-radius:2px;background:rgba(75,198,255,.07);white-space:nowrap}
+.mini.off{border-color:var(--line);color:var(--txt3);background:none}
+.ok{color:var(--cyan);font-family:var(--mono);font-size:11px}
+
+.list{margin-top:6px}
+.li{display:flex;gap:12px;align-items:baseline;padding:11px 2px;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.li .n{font-family:var(--mono);font-size:11px;color:var(--txt3);min-width:22px}
+.li .t{font-size:19px}
+.li.lock{opacity:.32;pointer-events:none}
+.li.cur .t{color:#fff}.li.cur .n{color:var(--mag)}
+.li .c{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--cyan)}
+
+/* lecteur */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top)) 14px 10px}
+.nav button{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--txt2);padding:8px 6px;text-transform:uppercase}
+.nav button[disabled]{opacity:.25}
+.story{padding:6px 22px 0}
+.story .meta{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--mag);text-transform:uppercase;margin-top:-6px;position:relative;z-index:2}
+.story h2{font-size:32px;font-weight:500;line-height:1.1;margin:6px 0 20px;position:relative;z-index:2}
+.story p{font-size:21px;line-height:1.62;margin-bottom:18px;color:#e6dcf4;opacity:0;transform:translateY(6px);animation:rise .9s forwards}
+.story p:first-of-type::first-letter{font-size:48px;float:left;line-height:.85;padding:5px 8px 0 0;color:var(--gold)}
+@keyframes rise{to{opacity:1;transform:none}}
+.passage{margin:26px 18px 0;border:1px solid var(--cyan);background:rgba(75,198,255,.05);padding:16px;font-family:var(--mono);border-radius:2px;
+  box-shadow:0 0 26px rgba(75,198,255,.1);opacity:0;animation:rise 1s forwards}
+.passage .ph{font-size:10px;letter-spacing:.22em;color:var(--cyan);text-transform:uppercase}
+.passage .pt{font-size:16px;margin:6px 0 10px;color:#fff}
+.passage .pl{font-size:12.5px;line-height:1.7;color:var(--txt2)}
+.passage .pl div::before{content:'› ';color:var(--cyan)}
+
+/* joueur */
+.player{min-height:100vh;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top)) 22px 28px;
+  background:radial-gradient(ellipse at 50% 0,rgba(255,75,216,.14),transparent 60%),var(--bg)}
+.player .ph{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--cyan);text-transform:uppercase}
+.player .nm{font-size:30px;line-height:1.15;margin:46px 0 6px;font-weight:500}
+.player .dt{font-family:var(--mono);font-size:12px;color:var(--txt2);min-height:18px}
+.player .tm{font-family:var(--mono);font-size:68px;font-weight:500;letter-spacing:.03em;margin:34px 0 8px;color:var(--gold);text-shadow:0 0 24px rgba(242,182,109,.4)}
+.player .tm.rest{color:var(--cyan);text-shadow:0 0 24px rgba(75,198,255,.4)}
+.player .nx{font-family:var(--mono);font-size:11px;color:var(--txt3);margin-top:6px}
+.player .sp{flex:1}
+.player .ctl{display:flex;gap:10px}.player .ctl .btn{margin-top:0}
+.fin{text-align:center;padding-top:70px}
+.fin .big{font-size:36px;font-weight:500;margin-bottom:12px}
+.fin p{color:var(--txt2);font-size:19px;line-height:1.5;margin-bottom:10px}
+
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--bg3);border:1px solid var(--cyan);
+  font-family:var(--mono);font-size:12px;padding:10px 16px;z-index:100;border-radius:2px;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+.foot{font-family:var(--mono);font-size:10px;color:var(--txt3);text-align:center;margin-top:30px;letter-spacing:.06em;line-height:1.8}
+.foot a{color:var(--txt2)}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<audio id="aud" preload="auto" playsinline></audio>
+<script src="story/chapitre0.js"></script>
+<script>
+'use strict';
+// ───────────────────────── CONFIG ─────────────────────────
+const APP_VERSION = '10 nov. 20 h 50';
+const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
+const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
+const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
+const START = '2026-11-09';          // début du niveau 0 (même départ que Ma Vie)
+const SOBRE_HAB_ID = 'sobre-jour';
+const MOTS_ALCOOL = ['bière','biere','vin','alcool','cidre','fort','scotch','whisky','vodka','rhum','gin','cocktail'];
+const CH = window.VESPER_CH0;
+const CACHE_KEY = 'vesper_cache_v1', PEND_KEY = 'vesper_pending_v1', LUE_KEY = 'vesper_lues_v1';
+
+// ───────────────────── PASSAGES (niveau 0) ─────────────────────
+// Mêmes séances que la semaine de reprise de Ma Vie. Index = (scène − 1) mod 9.
+const mp = (f, nom, d) => ({ mp3: f, nom, duree: d });
+const tm = (nom, d, detail) => ({ timer: nom, duree: d, detail: detail || '' });
+const ps = d => ({ pause: d });
+const WARM = mp('warmup.mp3', 'Échauffement Wing Chun', 410);
+const KICK = mp('kicks.mp3', 'Kicks — 5 types', 232);
+const PHA  = mp('physio-A.mp3', 'Physio WCT — Abduction hanche', 307);
+const PHB  = mp('physio-B.mp3', 'Physio WCT — Flexion hanche', 835);
+const FORME = (n) => tm(n + ' — Tam Lê', 420, 'Sans veste — forme complète');
+const PASSAGES = [
+  { type: 'Reprise — Formes + Marche', steps: [WARM, ps(30), KICK, ps(30), FORME('Siu Lim Tao'), ps(30), PHA] },
+  { type: 'Reprise — Formes + Marche', steps: [tm('Marche — 30 min', 1800, 'Sans charge · rythme confortable · note la tension cervicale'), ps(30), mp('cervical-circuit.mp3', 'Circuit cervical', 310)] },
+  { type: 'Reprise — Physio B', steps: [WARM, ps(30), PHB] },
+  { type: 'Reprise — Formes', steps: [WARM, ps(30), KICK, ps(30), FORME('Chum Kiu'), ps(20), FORME('Biu Jee'), ps(30), PHA] },
+  { type: 'Reprise — Physio + Gainage + Marche', steps: [WARM, ps(30), PHB, ps(30), mp('core-circuit.mp3', 'Circuit gainage', 526)] },
+  { type: 'Reprise — Physio + Gainage + Marche', steps: [tm('Marche — 35 min', 2100, 'Sans charge · rythme confortable'), ps(30), mp('cooldown.mp3', 'Retour au calme', 531)] },
+  { type: 'Reprise — Formes + Armes', steps: [WARM, ps(30), FORME('Siu Lim Tao'), ps(20), FORME('Baat Jaam Do'), ps(20), tm('Baat Jaam Do — Ip Man', 420, '')] },
+  { type: 'Reprise — Marche longue', steps: [tm('Marche longue — 40 min', 2400, 'Ou sortie de 4-5 km · sans charge · note la tension cervicale à 30 min')] },
+  { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] },
+];
+const passageDe = n => PASSAGES[(n - 1) % 9];
+const dureeMin = p => Math.round(p.steps.reduce((a, s) => a + (s.duree || s.pause || 0), 0) / 60);
+
+// ───────────────────────── ÉTAT ─────────────────────────
+const S = { sessions: [], wcSeances: [], journal: [], sync: 'idle', view: 'home', scene: 1, lues: {}, pending: [], play: null };
+function jget(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
+function jset(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const $ = id => document.getElementById(id);
+function localDateStr(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+const today = () => localDateStr(new Date());
+const dstr = x => String(x).replace(/^"+|"+$/g, '').slice(0, 10);
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('on'), 2400); }
+
+// ───────────────────────── DONNÉES (même Sheet que Ma Vie) ─────────────────────────
+async function api(params) {
+  const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 20000);
+  try { const r = await fetch(API + '?' + new URLSearchParams(params).toString(), { signal: ctl.signal }); return await r.json(); }
+  finally { clearTimeout(to); }
+}
+function saveCache() { jset(CACHE_KEY, { sessions: S.sessions, wcSeances: S.wcSeances, journal: S.journal }); }
+function normSeances(l) { return (l || []).map(x => { if (x && typeof x.date === 'string') x.date = dstr(x.date); return x; }).filter(x => x && x.statut !== 'Doublon'); }
+function parseJournal(rows) {
+  return (rows || []).filter(e => e.id).map(e => ({ date: dstr(e.date), medications: (() => { try { return JSON.parse(e.medications || '[]'); } catch (x) { return []; } })() }));
+}
+async function flushPending() {
+  if (!S.pending.length) return;
+  const reste = [];
+  for (const it of S.pending) {
+    try {
+      const res = it.kind === 'seance' ? await api({ action: 'saveWcSeance', data: JSON.stringify(it.payload) })
+                                       : await api({ action: 'saveSession', session: JSON.stringify(it.payload) });
+      if (res && res.ok === false) reste.push(it);
+    } catch (e) { reste.push(it); }
+  }
+  S.pending = reste; jset(PEND_KEY, reste);
+}
+async function sync() {
+  S.sync = 'loading'; renderPill();
+  try {
+    await flushPending();
+    const d = await api({ action: 'getAll' });
+    if (!d.ok) throw new Error(d.error || 'Erreur');
+    const attente = new Set(S.pending.map(p => String(p.payload.id)));
+    let ws = normSeances(d.wcSeances), ss = d.sessions || [];
+    // ce qui n'est pas encore parti reste visible
+    S.pending.forEach(p => {
+      if (p.kind === 'seance' && !ws.some(x => String(x.id) === String(p.payload.id))) ws.push(p.payload);
+      if (p.kind === 'session' && !ss.some(x => String(x.id) === String(p.payload.id))) ss.push(p.payload);
+    });
+    S.wcSeances = ws; S.sessions = ss; S.journal = parseJournal(d.journal);
+    S.sync = 'ok'; saveCache();
+  } catch (e) { S.sync = 'err'; }
+  renderPill(); render();
+}
+
+// ───────────────────────── PROGRESSION ─────────────────────────
+// Nombre de séances « Complété » depuis le départ, sans doublons (même règle que Ma Vie).
+function seancesFaites() {
+  const vus = new Set(), gardes = [];
+  (S.wcSeances || []).forEach(x => {
+    if (!x || x.statut !== 'Complété') return;
+    const d = dstr(x.date); if (d < START) return;
+    const id = x.id || (d + '|' + x.type + '|' + x.duree);
+    if (vus.has(id)) return;
+    const t = parseInt(String(x.id || '').replace(/\D/g, ''), 10) || 0;
+    const cle = d + '|' + x.type + '|' + x.duree;
+    if (t && gardes.some(g => g.cle === cle && g.t && Math.abs(g.t - t) < 300000)) return;
+    vus.add(id); gardes.push({ cle, t });
+  });
+  return vus.size;
+}
+function prochaineScene() { return Math.min(seancesFaites() + 1, CH.scenes.length + 1); }
+function joursAlcoolJournal() {
+  const set = new Set();
+  S.journal.forEach(e => {
+    if ((e.medications || []).some(m => { const n = String((m && m.name) || m || '').toLowerCase(); return MOTS_ALCOOL.some(w => n === w || n.indexOf(w) === 0); })) set.add(e.date);
+  });
+  return set;
+}
+function joursSobres() {
+  const alc = joursAlcoolJournal(), set = new Set();
+  S.sessions.forEach(x => { if (String(x.habitude_id) === SOBRE_HAB_ID) { const d = dstr(x.date); if (!alc.has(d)) set.add(d); } });
+  return set;
+}
+function serieSobre() {
+  const set = joursSobres(); const d = new Date(today() + 'T12:00:00');
+  if (!set.has(today())) d.setDate(d.getDate() - 1);
+  let c = 0; while (set.has(localDateStr(d))) { c++; d.setDate(d.getDate() - 1); }
+  return c;
+}
+const CLARTE_MAX = 7;
+function applyFog() {
+  const clarte = Math.min(serieSobre(), CLARTE_MAX) / CLARTE_MAX;
+  document.documentElement.style.setProperty('--fog', (0.62 - 0.5 * clarte).toFixed(2));
+}
+async function marquerSobre(jour) {
+  if (joursSobres().has(jour) || joursAlcoolJournal().has(jour)) return;
+  const session = { id: Date.now(), date: jour, habitude_id: SOBRE_HAB_ID, habitude_nom: 'Jour sans alcool', duree_minutes: 0, note: 'Sobre' };
+  S.sessions.push(session); saveCache(); applyFog(); render();
+  S.pending.push({ kind: 'session', payload: session }); jset(PEND_KEY, S.pending);
+  await flushPending(); toast(S.pending.length ? 'Sauvegardé ici — envoi plus tard' : 'Jour sans alcool ✓'); render();
+}
+async function enregistrerSeance(n) {
+  if (Date.now() - (S._derniere || 0) < 5000) return; S._derniere = Date.now();
+  const p = passageDe(n);
+  const seance = { id: 'S' + Date.now(), date: today(), type: p.type, statut: 'Complété', rpe: null, duree: dureeMin(p), log: [] };
+  S.wcSeances.push(seance); saveCache();
+  S.pending.push({ kind: 'seance', payload: seance }); jset(PEND_KEY, S.pending);
+  await flushPending();
+  toast(S.pending.length ? 'Sauvegardé ici — envoi plus tard' : 'Séance enregistrée ✓');
+}
+
+// ───────────────────────── ILLUSTRATIONS (placeholder vectoriel) ─────────────────────────
+const PALS = [
+  ['#1a0b33', '#6a1f7a', '#ff8a4c'], ['#0a1230', '#1f3a7a', '#ff5fa8'], ['#1b0a2a', '#7a1f5a', '#f2b66d'],
+  ['#07142a', '#17506e', '#ffb36b'], ['#200a2c', '#5a2a8a', '#ff7a7a'], ['#0a0a1f', '#2a1f5a', '#4bc6ff']
+];
+function rng(seed) { let s = seed * 9301 + 49297; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
+function artSvg(n) {
+  const r = rng(n + 3), pal = PALS[n % PALS.length], W = 400, H = 230, hor = 150 + Math.floor(r() * 20);
+  let svg = '<svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<defs><linearGradient id="g' + n + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + pal[0] + '"/><stop offset=".62" stop-color="' + pal[1] + '"/><stop offset="1" stop-color="' + pal[2] + '"/></linearGradient>' +
+         '<radialGradient id="s' + n + '"><stop offset="0" stop-color="#ffe2b8"/><stop offset="1" stop-color="#ffe2b8" stop-opacity="0"/></radialGradient></defs>';
+  svg += '<rect width="400" height="230" fill="url(#g' + n + ')"/>';
+  const sx = 70 + r() * 260, sy = hor - 28 - r() * 40;
+  svg += '<circle cx="' + sx + '" cy="' + sy + '" r="46" fill="url(#s' + n + ')" opacity=".7"/><circle cx="' + sx + '" cy="' + sy + '" r="9" fill="#ffe9cf" opacity=".9"/>';
+  for (let i = 0; i < 26; i++) svg += '<circle cx="' + (r() * 400).toFixed(0) + '" cy="' + (r() * 70).toFixed(0) + '" r="' + (0.4 + r() * 0.8).toFixed(1) + '" fill="#fff" opacity="' + (0.2 + r() * 0.5).toFixed(2) + '"/>';
+  const layer = (hmax, col, op, step) => {
+    let x = -10, d = '';
+    while (x < W + 10) { const w = 14 + r() * step, h = 12 + r() * hmax; d += '<rect x="' + x.toFixed(0) + '" y="' + (hor - h).toFixed(0) + '" width="' + w.toFixed(0) + '" height="' + (h + 90).toFixed(0) + '" fill="' + col + '" opacity="' + op + '"/>';
+      if (r() < 0.5) d += '<rect x="' + (x + 3).toFixed(0) + '" y="' + (hor - h + 6).toFixed(0) + '" width="2" height="2" fill="#4bc6ff" opacity=".8"/>';
+      x += w + r() * 5; }
+    return d;
+  };
+  svg += layer(60, pal[1], .55, 28) + layer(46, '#120820', .9, 34);
+  svg += '<rect y="' + (hor + 6) + '" width="400" height="90" fill="#0b0714"/>';
+  svg += '<rect y="' + (hor + 6) + '" width="400" height="2" fill="' + pal[2] + '" opacity=".5"/>';
+  const lamps = 2 + Math.floor(r() * 3);
+  for (let i = 0; i < lamps; i++) { const x = 40 + r() * 320, h = 50 + r() * 26;
+    svg += '<rect x="' + x.toFixed(0) + '" y="' + (hor + 6 - h).toFixed(0) + '" width="2" height="' + h.toFixed(0) + '" fill="#05030a"/>' +
+           '<circle cx="' + (x + 1).toFixed(0) + '" cy="' + (hor + 6 - h).toFixed(0) + '" r="14" fill="#f2b66d" opacity=".18"/>' +
+           '<circle cx="' + (x + 1).toFixed(0) + '" cy="' + (hor + 6 - h).toFixed(0) + '" r="2.6" fill="#ffd9a0"/>'; }
+  // silhouette
+  const px = 120 + r() * 160;
+  svg += '<g fill="#05030a"><ellipse cx="' + px.toFixed(0) + '" cy="' + (hor + 6 - 36) + '" rx="4.5" ry="5"/><path d="M' + (px - 7).toFixed(0) + ' ' + (hor + 6) + ' L' + (px - 5).toFixed(0) + ' ' + (hor - 28) + ' L' + (px + 5).toFixed(0) + ' ' + (hor - 28) + ' L' + (px + 7).toFixed(0) + ' ' + (hor + 6) + ' Z"/></g>';
+  return svg + '</svg>';
+}
+function artHtml(n) {
+  const nn = String(n).padStart(2, '0');
+  return '<div class="art">' + artSvg(n) + '<img src="images/ch0/s' + nn + '.jpg" alt="" onerror="this.remove()"><div class="fogv"></div></div>';
+}
+
+// ───────────────────────── VUES ─────────────────────────
+function renderPill() {
+  const p = $('pill'); if (!p) return;
+  p.className = 'pill' + (S.sync === 'err' ? ' err' : '');
+  p.textContent = S.sync === 'loading' ? 'SYNC…' : S.sync === 'err' ? 'HORS LIGNE' : S.sync === 'ok' ? 'SYNC ✓' : 'SYNC';
+}
+function render() {
+  applyFog();
+  const a = $('app');
+  if (S.view === 'home') a.innerHTML = vHome();
+  else if (S.view === 'read') a.innerHTML = vRead();
+  else if (S.view === 'play') vPlayInit();
+  renderPill();
+}
+function go(view, n) { S.view = view; if (n) S.scene = n; window.scrollTo(0, 0); render(); }
+
+function vHome() {
+  const faits = seancesFaites(), next = prochaineScene(), tot = CH.scenes.length, fini = next > tot;
+  const cur = Math.min(next, tot), sc = CH.scenes[cur - 1];
+  const serie = serieSobre(), clarte = Math.min(serie, CLARTE_MAX), td = today();
+  const hier = localDateStr(new Date(Date.now() - 864e5));
+  const sob = jour => { const bu = joursAlcoolJournal().has(jour), ok = joursSobres().has(jour);
+    return ok ? '<span class="ok">✓ ' + (jour === td ? "aujourd'hui" : 'hier') + '</span>' : bu ? '<span class="mini off">alcool noté</span>'
+      : '<button class="mini" onclick="marquerSobre(\'' + jour + '\')">' + (jour === td ? "Aujourd'hui" : 'Hier') + ' · sans alcool</button>'; };
+  let h = '<div class="top"><div class="logo">Vesp<i>e</i>r</div><button class="pill" id="pill" onclick="sync()">SYNC</button></div>';
+  h += '<div class="kicker">Chapitre ' + CH.id + ' · ' + esc(CH.titre) + '</div>';
+  h += artHtml(cur);
+  h += '<div class="wrap"><h1 class="title">' + (fini ? 'Fin du chapitre ' + CH.id : 'Scène ' + cur + ' · ' + esc(sc.titre)) + '</h1>';
+  h += '<div class="sub">' + faits + ' / ' + tot + ' scènes accomplies</div>';
+  h += fini ? '<p style="font-size:19px;margin-top:14px;color:var(--txt2)">Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.</p>'
+            : '<button class="btn" onclick="go(\'read\',' + cur + ')">Continuer l\'histoire</button>';
+  h += '<div class="dots">' + CH.scenes.map(s => '<span class="dot ' + (s.n <= faits ? 'done' : s.n === next ? 'cur' : '') + '"></span>').join('') + '</div>';
+  h += '<div class="card"><h3>Clarté · jours sans alcool</h3><div class="row"><div style="font-size:20px">Série : ' + serie + ' jour' + (serie > 1 ? 's' : '') + '</div><div class="sub">' + clarte + ' / ' + CLARTE_MAX + '</div></div>' +
+       '<div class="bar"><div style="width:' + (clarte / CLARTE_MAX * 100) + '%"></div></div>' +
+       '<div class="row" style="margin-top:10px">' + sob(hier) + sob(td) + '</div></div>';
+  h += '<div class="card"><h3>Scènes</h3><div class="list">' + CH.scenes.map(s => {
+    const st = s.n <= faits ? 'done' : s.n === next ? 'cur' : 'lock';
+    return '<button class="li ' + (st === 'lock' ? 'lock' : st === 'cur' ? 'cur' : '') + '" onclick="go(\'read\',' + s.n + ')"><span class="n">' + String(s.n).padStart(2, '0') + '</span><span class="t">' + (st === 'lock' ? '· · ·' : esc(s.titre)) + '</span>' + (st === 'done' ? '<span class="c">✓</span>' : '') + '</button>'; }).join('') + '</div></div>';
+  h += '<div class="foot">version ' + APP_VERSION + ' · ' + (S.wcSeances || []).length + ' séances lues' + (S.pending.length ? ' · ' + S.pending.length + ' en attente d\'envoi' : '') +
+       '<br><a href="' + MA_VIE_URL + '">Ouvrir Ma Vie</a></div></div>';
+  return h;
+}
+
+function vRead() {
+  const n = S.scene, sc = CH.scenes[n - 1], next = prochaineScene(), faits = seancesFaites();
+  const p = sc.passage, pa = passageDe(n);
+  let h = '<div class="nav"><button onclick="go(\'home\')">‹ Accueil</button><button id="pill" class="pill" style="border:none;background:none" onclick="sync()"></button></div>';
+  h += artHtml(n);
+  h += '<div class="story"><div class="meta">Chapitre ' + CH.id + ' · Scène ' + n + ' / ' + CH.scenes.length + '</div><h2>' + esc(sc.titre) + '</h2>';
+  h += sc.paras.map((t, i) => '<p style="animation-delay:' + (0.3 + i * 0.9) + 's">' + esc(t) + '</p>').join('') + '</div>';
+  h += '<div class="passage" style="animation-delay:' + (0.6 + sc.paras.length * 0.9) + 's"><div class="ph">Passage ' + String(n).padStart(2, '0') + '</div><div class="pt">' + esc(p.titre) + '</div><div class="pl">' +
+       p.lignes.map(l => '<div>' + esc(l) + '</div>').join('') + '</div><div class="pl" style="margin-top:8px;color:var(--txt3)">≈ ' + dureeMin(pa) + ' min au total</div></div>';
+  h += '<div class="wrap">';
+  if (n <= faits) h += '<div class="btn ghost" style="text-align:center">✓ Passage accompli</div>';
+  else if (n === next) h += '<button class="btn" onclick="startPassage(' + n + ')">Commencer le Passage</button>';
+  else h += '<div class="btn ghost" style="text-align:center">Passage verrouillé</div>';
+  h += '<div class="row" style="margin-top:14px"><button class="mini off" ' + (n > 1 ? '' : 'disabled') + ' onclick="go(\'read\',' + (n - 1) + ')">‹ Précédente</button>' +
+       '<button class="mini off" ' + (n < CH.scenes.length && n < next ? '' : 'disabled') + ' onclick="go(\'read\',' + (n + 1) + ')">Suivante ›</button></div></div>';
+  return h;
+}
+
+// ───────────────────────── JOUEUR DE PASSAGE ─────────────────────────
+let wake = null;
+async function wakeOn() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch (e) {} }
+function wakeOff() { try { if (wake) wake.release(); } catch (e) {} wake = null; }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.play && !S.play.fini) wakeOn(); });
+
+function startPassage(n) {
+  const aud = $('aud');
+  S.play = { n, steps: passageDe(n).steps, i: -1, pause: false, fini: false, end: 0, rest: 0 };
+  // déverrouille l'audio sur ce geste de l'utilisateur
+  try { aud.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA='; aud.play().catch(() => {}); } catch (e) {}
+  wakeOn(); S.view = 'play'; window.scrollTo(0, 0); nextStep();
+}
+function nextStep() {
+  const P = S.play, aud = $('aud'); aud.onended = null; aud.onerror = null; aud.pause();
+  P.i++;
+  if (P.i >= P.steps.length) { P.fini = true; clearInterval(P.iv); wakeOff(); drawPlay(); return; }
+  const s = P.steps[P.i], d = (s.duree || s.pause) * 1000;
+  P.end = Date.now() + d; P.rest = d; P.pause = false; P.audioFail = false;
+  if (s.mp3) {
+    aud.src = MP3_BASE + s.mp3; aud.onended = () => { if (S.play === P && !P.pause) nextStep(); };
+    aud.onerror = () => { P.audioFail = true; toast('Audio indisponible — minuterie seulement'); };
+    aud.play().catch(() => { P.audioFail = true; });
+  }
+  clearInterval(P.iv); P.iv = setInterval(tick, 250); drawPlay();
+}
+function tick() {
+  const P = S.play; if (!P || P.pause || P.fini) return;
+  const s = P.steps[P.i], left = P.end - Date.now(), aud = $('aud');
+  const el = $('tm'); if (el) el.textContent = fmt(Math.max(0, left));
+  const tot = $('tot'); if (tot) tot.textContent = fmt(restTotal(Math.max(0, left)));
+  if (s.mp3 && !P.audioFail) { if (left < -15000) nextStep(); }       // l'audio fait foi ; garde-fou
+  else if (left <= 0) { try { navigator.vibrate && navigator.vibrate(120); } catch (e) {} nextStep(); }
+}
+const fmt = ms => { const t = Math.ceil(ms / 1000), m = Math.floor(t / 60), s = t % 60; return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); };
+function restTotal(leftMs) { const P = S.play; let t = leftMs; for (let k = P.i + 1; k < P.steps.length; k++) t += (P.steps[k].duree || P.steps[k].pause) * 1000; return t; }
+function togglePause() {
+  const P = S.play, aud = $('aud'), s = P.steps[P.i];
+  if (!P.pause) { P.rest = Math.max(0, P.end - Date.now()); P.pause = true; try { aud.pause(); } catch (e) {} }
+  else { P.end = Date.now() + P.rest; P.pause = false; if (s.mp3 && !P.audioFail) aud.play().catch(() => {}); }
+  drawPlay();
+}
+function passer() { nextStep(); }
+function quitter() { if (!confirm('Quitter le Passage sans enregistrer la séance ?')) return; stopPlay(); go('read', S.play.n); }
+function stopPlay() { const P = S.play; if (P) clearInterval(P.iv); try { $('aud').pause(); } catch (e) {} wakeOff(); }
+function vPlayInit() { drawPlay(); }
+function drawPlay() {
+  const P = S.play, a = $('app'); let h;
+  if (P.fini) {
+    h = '<div class="player"><div class="ph">Passage ' + String(P.n).padStart(2, '0') + '</div><div class="fin"><div class="big">Passage accompli</div><p>Tu as tenu. Ce que tu viens de faire existe maintenant, quoi que dise la brume.</p>' +
+        '<button class="btn" onclick="terminer()">Enregistrer la séance</button></div></div>';
+  } else {
+    const s = P.steps[P.i], rest = !!s.pause, nom = rest ? 'Respire' : (s.nom || s.timer), nx = P.steps[P.i + 1];
+    const left = P.pause ? P.rest : Math.max(0, P.end - Date.now());
+    h = '<div class="player"><div class="ph">Passage ' + String(P.n).padStart(2, '0') + ' · étape ' + (P.i + 1) + ' / ' + P.steps.length + '</div>' +
+        '<div class="nm">' + esc(nom) + '</div><div class="dt">' + esc(rest ? 'Pause — reprends ton souffle' : (s.detail || (s.mp3 ? 'Écoute la voix' : ''))) + '</div>' +
+        '<div class="tm ' + (rest ? 'rest' : '') + '" id="tm">' + fmt(left) + '</div>' +
+        '<div class="nx">Reste au total : <span id="tot">' + fmt(restTotal(left)) + '</span></div>' +
+        '<div class="nx">' + (nx ? 'Ensuite : ' + esc(nx.pause ? 'pause' : (nx.nom || nx.timer)) : 'Dernière étape') + '</div>' +
+        '<div class="sp"></div><div class="ctl"><button class="btn cy" onclick="togglePause()">' + (P.pause ? 'Reprendre' : 'Pause') + '</button>' +
+        '<button class="btn ghost" onclick="passer()">Passer</button></div>' +
+        '<button class="btn ghost" style="margin-top:10px" onclick="quitter()">Quitter</button></div>';
+  }
+  a.innerHTML = h;
+}
+async function terminer() {
+  const n = S.play.n; stopPlay(); await enregistrerSeance(n); S.play = null;
+  const next = prochaineScene(); S.lues[n] = 1; jset(LUE_KEY, S.lues);
+  go(next <= CH.scenes.length ? 'read' : 'home', next <= CH.scenes.length ? next : 0);
+}
+
+// ───────────────────────── DÉMARRAGE ─────────────────────────
+(function init() {
+  const c = jget(CACHE_KEY, null);
+  if (c) { S.sessions = c.sessions || []; S.wcSeances = c.wcSeances || []; S.journal = c.journal || []; }
+  S.pending = jget(PEND_KEY, []); S.lues = jget(LUE_KEY, {});
+  render(); sync();
+})();
+</script>
+</body>
+</html>
