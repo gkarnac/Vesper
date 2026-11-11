@@ -146,7 +146,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '11 nov. 17 h 40';
+const APP_VERSION = '11 nov. 18 h 00';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -178,6 +178,36 @@ const PASSAGES = [
   { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] },
 ];
 const passageDe = n => PASSAGES[(n - 1) % 9];
+// Semaine type du niveau 0 (même programme que Ma Vie). p = index du passage (0-8) ; sinon libre.
+const DESC = ['Formes · Siu Lim Tao, kicks, physio', 'Marche 30 min + circuit cervical', 'Physio B · flexion de hanche', 'Formes · Chum Kiu, Biu Jee',
+  'Physio B + circuit gainage', 'Marche 35 min + retour au calme', 'Formes + armes (Baat Jaam Do)', 'Marche longue 40 min', 'Yoga Iyengar · leçon 1'];
+const JOURS_FR = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+const PLAN_SEM = [
+  [{ m: 'Matin', p: 0 }, { m: 'Soir', p: 1 }],
+  [{ m: 'Matin', p: 2 }, { m: 'Soir', libre: 'Repos — récupération' }],
+  [{ m: 'Matin', p: 3 }, { m: 'Soir', libre: 'Atelier — soirée libre' }],
+  [{ m: 'Matin', p: 4 }, { m: 'Soir', p: 5 }],
+  [{ m: 'Matin', p: 6 }, { m: 'Soir', libre: 'Atelier — soirée libre' }],
+  [{ m: 'Matin ou soir', p: 7 }],
+  [{ m: 'Matin', p: 8 }, { m: 'Soir', libre: 'Atelier — soirée libre' }]
+];
+const idxJour = d => (new Date(d + 'T12:00:00').getDay() + 6) % 7;
+function faitesAujourdhui() {
+  const ids = new Set(); (S.wcSeances || []).forEach(x => { if (x && x.statut === 'Complété' && dstr(x.date) === today()) ids.add(x.id || Math.random()); });
+  return ids.size;
+}
+function carteAujourdhui() {
+  const td = today(), plan = PLAN_SEM[idxJour(td)], faites = faitesAujourdhui();
+  let k = 0, h = '<div class="card"><h3>Au programme · ' + JOURS_FR[idxJour(td)] + '</h3>';
+  plan.forEach(e => {
+    if (e.libre) { h += '<div class="row" style="padding:6px 0"><div style="color:var(--txt3);font-size:18px">' + e.m + ' · ' + esc(e.libre) + '</div></div>'; return; }
+    const fait = k < faites; k++;
+    h += '<div class="row" style="padding:6px 0;flex-wrap:nowrap"><div style="font-size:18px;' + (fait ? 'color:var(--txt3)' : '') + '">' + e.m + ' · ' + esc(DESC[e.p]) + '</div><span class="' + (fait ? 'ok' : 'sub') + '">' + (fait ? '✓' : 'à faire') + '</span></div>';
+  });
+  const dem = PLAN_SEM[(idxJour(td) + 1) % 7];
+  h += '<div class="sub" style="margin-top:8px;line-height:1.6">Demain · ' + JOURS_FR[(idxJour(td) + 1) % 7] + ' : ' + dem.map(e => e.m.split(' ')[0] + ' ' + (e.libre ? e.libre.split(' —')[0].toLowerCase() : DESC[e.p])).join(' · ') + '</div></div>';
+  return h;
+}
 const dureeMin = p => Math.round(p.steps.reduce((a, s) => a + (s.duree || s.pause || 0), 0) / 60);
 
 // ───────────────────────── ÉTAT ─────────────────────────
@@ -372,6 +402,7 @@ function vHome() {
   h += '<div class="sub">' + faits + ' / ' + tot + ' scènes accomplies</div>';
   h += fini ? '<p style="font-size:19px;margin-top:14px;color:var(--txt2)">Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.</p>'
             : '<button class="btn" onclick="go(\'read\',' + cur + ')">Continuer l\'histoire</button>';
+  h += carteAujourdhui();
   h += '<div class="dots">' + CH.scenes.map(s => '<span class="dot ' + (s.n <= faits ? 'done' : s.n === next ? 'cur' : '') + '"></span>').join('') + '</div>';
   h += '<div class="card"><h3>Clarté · jours sans alcool</h3><div class="row"><div style="font-size:20px">Série : ' + serie + ' jour' + (serie > 1 ? 's' : '') + '</div><div class="sub">' + clarte + ' / ' + CLARTE_MAX + '</div></div>' +
        '<div class="bar"><div style="width:' + (clarte / CLARTE_MAX * 100) + '%"></div></div>' +
