@@ -146,7 +146,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '11 nov. 18 h 00';
+const APP_VERSION = '11 nov. 18 h 20';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -366,9 +366,12 @@ function artSvg(n) {
   svg += '<g fill="#05030a"><ellipse cx="' + px.toFixed(0) + '" cy="' + (hor + 6 - 36) + '" rx="4.5" ry="5"/><path d="M' + (px - 7).toFixed(0) + ' ' + (hor + 6) + ' L' + (px - 5).toFixed(0) + ' ' + (hor - 28) + ' L' + (px + 5).toFixed(0) + ' ' + (hor - 28) + ' L' + (px + 7).toFixed(0) + ' ' + (hor + 6) + ' Z"/></g>';
   return svg + '</svg>';
 }
+// Cadrage par scène : point d'intérêt de l'image (x% y%) dans le lecteur (paysage) et pendant le Passage (portrait).
+const FOCUS = { 4: { read: '50% 20%', play: '62% 50%' } };
+const foc = (n, k) => (FOCUS[n] && FOCUS[n][k]) || '50% 50%';
 function artHtml(n) {
   const nn = String(n).padStart(2, '0');
-  return '<div class="art">' + artSvg(n) + '<img src="images/ch0/s' + nn + '.jpg" alt="" onerror="this.remove()"><div class="fogv"></div></div>';
+  return '<div class="art">' + artSvg(n) + '<img src="images/ch0/s' + nn + '.jpg" alt="" style="object-position:' + foc(n, 'read') + '" onerror="this.remove()"><div class="fogv"></div></div>';
 }
 
 // ───────────────────────── VUES ─────────────────────────
@@ -486,7 +489,7 @@ function drawPlay() {
   } else {
     const s = P.steps[P.i], rest = !!s.pause, nom = rest ? 'Respire' : (s.nom || s.timer), nx = P.steps[P.i + 1];
     const left = P.pause ? P.rest : Math.max(0, P.end - Date.now());
-    h = '<div class="player"><div class="pbg">' + artSvg(P.n) + '<img src="images/ch0/s' + String(P.n).padStart(2, '0') + '.jpg" alt="" onerror="this.remove()"><div class="fogv"></div></div><div class="ph">Passage ' + String(P.n).padStart(2, '0') + ' · étape ' + (P.i + 1) + ' / ' + P.steps.length + '</div>' +
+    h = '<div class="player"><div class="pbg">' + artSvg(P.n) + '<img src="images/ch0/s' + String(P.n).padStart(2, '0') + '.jpg" alt="" style="object-position:' + foc(P.n, 'play') + '" onerror="this.remove()"><div class="fogv"></div></div><div class="ph">Passage ' + String(P.n).padStart(2, '0') + ' · étape ' + (P.i + 1) + ' / ' + P.steps.length + '</div>' +
         '<div class="nm">' + esc(nom) + '</div><div class="dt">' + esc(rest ? 'Pause — reprends ton souffle' : (s.detail || (s.mp3 ? 'Écoute la voix' : ''))) + '</div>' +
         '<div class="tm ' + (rest ? 'rest' : '') + '" id="tm">' + fmt(left) + '</div>' +
         '<div class="nx">Reste au total : <span id="tot">' + fmt(restTotal(left)) + '</span></div>' +
