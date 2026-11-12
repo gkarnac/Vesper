@@ -146,7 +146,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '12 nov. 13 h 40';
+const APP_VERSION = '12 nov. 13 h 50';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -367,7 +367,7 @@ function artSvg(n) {
   return svg + '</svg>';
 }
 // Cadrage par scène : point d'intérêt de l'image (x% y%) dans le lecteur (paysage) et pendant le Passage (portrait).
-const FOCUS = { 4: { read: '50% 20%', play: '62% 50%' }, 5: { read: '50% 30%', play: '60% 50%' }, 6: { read: '50% 40%', play: '47% 50%' }, 7: { read: '50% 45%', play: '52% 50%' } };
+const FOCUS = { 4: { read: '50% 20%', play: '62% 50%' }, 5: { read: '50% 30%', play: '60% 50%' }, 6: { read: '50% 40%', play: '47% 50%' }, 7: { read: '50% 45%', play: '52% 50%' }, 3: { read: '50% 40%', play: '66% 50%' } };
 const foc = (n, k) => (FOCUS[n] && FOCUS[n][k]) || '50% 50%';
 function artHtml(n) {
   const nn = String(n).padStart(2, '0');
