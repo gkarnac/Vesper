@@ -147,7 +147,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '12 nov. 18 h 40';
+const APP_VERSION = '12 nov. 18 h 50';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -407,7 +407,7 @@ function vHome() {
   const serie = serieSobre(), clarte = Math.min(serie, CLARTE_MAX), td = today();
   const hier = localDateStr(new Date(Date.now() - 864e5));
   const sob = jour => { const bu = joursAlcoolJournal().has(jour), ok = joursSobres().has(jour), lib = jour === td ? "Aujourd'hui" : 'Hier';
-    const btnBu = '<button class="mini bu" onclick="marquerBu(\'' + jour + '\')">J\'ai bu</button>';
+    const btnBu = '<button class="mini bu" onclick="marquerBu(\'' + jour + '\')">Avec alcool</button>';
     const btnOk = '<button class="mini" onclick="marquerSobre(\'' + jour + '\')">Sans alcool</button>';
     return '<div class="row" style="flex-wrap:nowrap;padding:5px 0"><div style="font-size:18px">' + lib + '</div><div class="row" style="flex-wrap:nowrap;gap:6px">' +
       (bu ? '<span class="mini off">alcool noté</span>' : ok ? '<span class="ok">✓ sans alcool</span>' + btnBu : btnOk + btnBu) + '</div></div>'; };
