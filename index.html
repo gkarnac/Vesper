@@ -69,6 +69,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 .bar>div{height:100%;background:linear-gradient(90deg,var(--dusk),var(--gold));transition:width .6s}
 .row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .mini{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;color:var(--cyan);border:1px solid var(--cyan);padding:7px 8px;border-radius:2px;background:rgba(75,198,255,.07);white-space:nowrap}
+.mini.bu{border-color:var(--mag);color:var(--mag);background:rgba(255,75,216,.07)}
 .mini.off{border-color:var(--line);color:var(--txt3);background:none}
 .ok{color:var(--cyan);font-family:var(--mono);font-size:11px}
 
@@ -146,7 +147,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '12 nov. 16 h 20';
+const APP_VERSION = '12 nov. 18 h 40';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -260,6 +261,7 @@ async function sync() {
       if (p.kind === 'session' && !ss.some(x => String(x.id) === String(p.payload.id))) ss.push(p.payload);
     });
     S.wcSeances = ws; S.sessions = ss; S.journal = parseJournal(d.journal);
+    S.pending.forEach(p => { if (p.kind === 'journal') S.journal.push({ date: dstr(p.payload.date), medications: p.payload.medications || [] }); });
     S.sync = 'ok'; saveCache();
   } catch (e) { S.sync = 'err'; }
   renderPill(); render();
@@ -311,6 +313,15 @@ async function marquerSobre(jour) {
   S.sessions.push(session); saveCache(); applyFog(); render();
   S.pending.push({ kind: 'session', payload: session }); jset(PEND_KEY, S.pending);
   await flushPending(); toast(S.pending.length ? 'Sauvegardé ici — envoi plus tard' : 'Jour sans alcool ✓'); render();
+}
+async function marquerBu(jour) {
+  const lib = jour === today() ? "aujourd'hui" : 'hier';
+  if (!confirm("Noter de l'alcool pour " + lib + " ?\nCe jour ne comptera pas et ta série repart.")) return;
+  const entry = { id: Date.now(), date: jour, time: '', pain: 0, locations: [], medications: [{ name: 'Alcool' }], exercises: [], duration: null,
+    intensity: null, events: [], notes: 'Alcool noté depuis Vesper', ex_eval: null, source: 'vesper-alcool' };
+  S.journal.push({ date: jour, medications: entry.medications }); applyFog(); render();
+  S.pending.push({ kind: 'journal', payload: entry }); jset(PEND_KEY, S.pending);
+  await flushPending(); toast(S.pending.length ? 'Sauvegardé ici — envoi plus tard' : 'Alcool noté'); render();
 }
 async function enregistrerSeance(n, rpe, suivi) {
   if (Date.now() - (S._derniere || 0) < 5000) return; S._derniere = Date.now();
@@ -395,9 +406,11 @@ function vHome() {
   const cur = Math.min(next, tot), sc = CH.scenes[cur - 1];
   const serie = serieSobre(), clarte = Math.min(serie, CLARTE_MAX), td = today();
   const hier = localDateStr(new Date(Date.now() - 864e5));
-  const sob = jour => { const bu = joursAlcoolJournal().has(jour), ok = joursSobres().has(jour);
-    return ok ? '<span class="ok">✓ ' + (jour === td ? "aujourd'hui" : 'hier') + '</span>' : bu ? '<span class="mini off">alcool noté</span>'
-      : '<button class="mini" onclick="marquerSobre(\'' + jour + '\')">' + (jour === td ? "Aujourd'hui" : 'Hier') + ' · sans alcool</button>'; };
+  const sob = jour => { const bu = joursAlcoolJournal().has(jour), ok = joursSobres().has(jour), lib = jour === td ? "Aujourd'hui" : 'Hier';
+    const btnBu = '<button class="mini bu" onclick="marquerBu(\'' + jour + '\')">J\'ai bu</button>';
+    const btnOk = '<button class="mini" onclick="marquerSobre(\'' + jour + '\')">Sans alcool</button>';
+    return '<div class="row" style="flex-wrap:nowrap;padding:5px 0"><div style="font-size:18px">' + lib + '</div><div class="row" style="flex-wrap:nowrap;gap:6px">' +
+      (bu ? '<span class="mini off">alcool noté</span>' : ok ? '<span class="ok">✓ sans alcool</span>' + btnBu : btnOk + btnBu) + '</div></div>'; };
   let h = '<div class="top"><div class="logo">Vesp<i>e</i>r</div><button class="pill" id="pill" onclick="sync()">SYNC</button></div>';
   h += '<div class="kicker">Chapitre ' + CH.id + ' · ' + esc(CH.titre) + '</div>';
   h += artHtml(cur);
@@ -409,7 +422,7 @@ function vHome() {
   h += '<div class="dots">' + CH.scenes.map(s => '<span class="dot ' + (s.n <= faits ? 'done' : s.n === next ? 'cur' : '') + '"></span>').join('') + '</div>';
   h += '<div class="card"><h3>Clarté · jours sans alcool</h3><div class="row"><div style="font-size:20px">Série : ' + serie + ' jour' + (serie > 1 ? 's' : '') + '</div><div class="sub">' + clarte + ' / ' + CLARTE_MAX + '</div></div>' +
        '<div class="bar"><div style="width:' + (clarte / CLARTE_MAX * 100) + '%"></div></div>' +
-       '<div class="row" style="margin-top:10px">' + sob(hier) + sob(td) + '</div></div>';
+       '<div style="margin-top:8px">' + sob(hier) + sob(td) + '</div></div>';
   h += '<div class="card"><h3>Scènes</h3><div class="list">' + CH.scenes.map(s => {
     const st = s.n <= faits ? 'done' : s.n === next ? 'cur' : 'lock';
     return '<button class="li ' + (st === 'lock' ? 'lock' : st === 'cur' ? 'cur' : '') + '" onclick="go(\'read\',' + s.n + ')"><span class="n">' + String(s.n).padStart(2, '0') + '</span><span class="t">' + (st === 'lock' ? '· · ·' : esc(s.titre)) + '</span>' + (st === 'done' ? '<span class="c">✓</span>' : '') + '</button>'; }).join('') + '</div></div>';
