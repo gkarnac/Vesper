@@ -102,7 +102,7 @@ def piste(paras, voix, sortie):
 def voix_masculines():
     r = appel("https://texttospeech.googleapis.com/v1/voices?languageCode=fr-CA&key=" + cle())
     return sorted(v["name"] for v in r.get("voices", [])
-                  if "Chirp3-HD" in v["name"] and v.get("ssmlGender") == "MALE")
+                  if v["name"].startswith("fr-CA-Chirp3-HD") and v.get("ssmlGender") == "MALE")
 
 
 def main():
@@ -125,7 +125,7 @@ def main():
         ch = charger(1); sc = ch["scenes"][0]
         for v in voix_masculines():
             f = os.path.join(RACINE, "audio", "essais", v + ".mp3")
-            piste(sc["paras"][:2], v, f); print("ok", f)
+            piste(sc["paras"][:1], v, f); print("ok", f)
         return
 
     if o.chapitre is None:
