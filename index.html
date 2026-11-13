@@ -144,17 +144,26 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <div class="toast" id="toast"></div>
 <audio id="aud" preload="auto" playsinline></audio>
 <script src="story/chapitre0.js"></script>
+<script src="story/chapitre1.js"></script>
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '12 nov. 18 h 50';
+const APP_VERSION = '13 nov. 18 h 30';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
 const START = '2026-11-09';          // début du niveau 0 (même départ que Ma Vie)
 const SOBRE_HAB_ID = 'sobre-jour';
 const MOTS_ALCOOL = ['bière','biere','vin','alcool','cidre','fort','scotch','whisky','vodka','rhum','gin','cocktail'];
-const CH = window.VESPER_CH0;
+// Chapitres enchaînés : la scène globale g (1, 2, 3…) avance d'une scène par séance complétée.
+const CHAPS = [window.VESPER_CH0, window.VESPER_CH1].filter(Boolean);
+const TOTAL = CHAPS.reduce((a, c) => a + c.scenes.length, 0);
+function loc(g) {
+  let k = g;
+  for (const c of CHAPS) { if (k <= c.scenes.length) return { c, n: k, sc: c.scenes[k - 1] }; k -= c.scenes.length; }
+  const c = CHAPS[CHAPS.length - 1]; return { c, n: c.scenes.length, sc: c.scenes[c.scenes.length - 1] };
+}
+function base(c) { let b = 0; for (const x of CHAPS) { if (x === c) return b; b += x.scenes.length; } return b; }
 const CACHE_KEY = 'vesper_cache_v1', PEND_KEY = 'vesper_pending_v1', LUE_KEY = 'vesper_lues_v1';
 
 // ───────────────────── PASSAGES (niveau 0) ─────────────────────
@@ -178,7 +187,38 @@ const PASSAGES = [
   { type: 'Reprise — Marche longue', steps: [tm('Marche longue — 40 min', 2400, 'Ou sortie de 4-5 km · sans charge · note la tension cervicale à 30 min')] },
   { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] },
 ];
-const passageDe = n => PASSAGES[(n - 1) % 9];
+// ───────────────────── PASSAGES (niveau 1 · Base aérobie) ─────────────────────
+// Même grille de 9 séances ; la semaine du chapitre (scènes 1-9, 10-18…) règle la progression.
+const Z2 = [30, 35, 40, 45], RANDO = [10, 11, 11, 12];
+const PUSHPULL = mp('jeudi-push-pull.mp3', 'Circuit pompes et tirages', 763, [['ex-014','Pompes inclinées'],['ex-018','Tirage incliné']]);
+const COIFFE = mp('coiffe-rotations.mp3', 'Coiffe — rotations et élévations', 339);
+const PONT = mp('jeudi-pont.mp3', 'Pont fessier unilatéral', 185, [['ex-049','Pont fessier']]);
+const GAINLAT = mp('jeudi-gainage.mp3', 'Gainage latéral G+D', 153, [['ex-052','Gainage latéral']]);
+const CORE = mp('core-circuit.mp3', 'Circuit gainage', 526, [['ex-022','Hollow body hold'],['ex-023','Levées de jambes'],['ex-050','Dead bug']]);
+const z2 = (w, test) => tm('Marche Z2 — ' + Z2[w] + ' min', Z2[w] * 60, '129 à 141 bpm · rythme régulier' + (test ? ' · test : 45 min en continu' : ''));
+function passageN1(n) {
+  const w = Math.min(3, Math.floor((n - 1) / 9)), p = (n - 1) % 9, semB = w % 2 === 1, test = w === 3;
+  switch (p) {
+    case 0: return { type: 'Base aérobie — Formes', steps: [WARM, ps(30), FORME('Siu Lim Tao'), ps(20), FORME('Chum Kiu'), ps(20), FORME('Biu Jee'), ps(30), PHA] };
+    case 1: return { type: 'Base aérobie — Marche Z2', steps: [z2(w, test), ps(30), mp('cervical-circuit.mp3', 'Circuit cervical', 310)] };
+    case 2: return { type: 'Base aérobie — Force A', steps: [WARM, ps(30), KICK, ps(30), PUSHPULL, ps(30), COIFFE] };
+    case 3: return { type: 'Base aérobie — Physio B + Gainage', steps: [WARM, ps(30), PHB, ps(30), CORE] };
+    case 4: return { type: 'Base aérobie — Mannequin + Armes', steps: [WARM, ps(30), tm('Muk Yan Jong — Tam Lai', 720, 'Forme complète'), ps(20), FORME('Baat Jaam Do')]
+                       .concat(semB ? [ps(20), tm('Baat Jaam Do — Ip Man', 420, 'Forme complète')] : []) };
+    case 5: return { type: 'Base aérobie — Marche Z2', steps: [z2(w, false), ps(30), mp('cooldown.mp3', 'Retour au calme', 531)] };
+    case 6: return { type: 'Base aérobie — Force B', steps: [WARM, ps(30), PONT, ps(20)].concat(test ? [] : [GAINLAT, ps(20)])
+                       .concat([COIFFE, ps(30), PHA, ps(30), tm('Siu Lim Tao — ' + (semB ? 'Chan Wah Shun' : 'Ip Man'), 420, 'Forme complète')]) };
+    case 7: return { type: 'Base aérobie — Rando', steps: [tm('Rando — ' + RANDO[w] + ' km', Math.round(RANDO[w] / 3 * 3600), 'Sans charge · environ 3 km/h' + (test ? ' · test : RPE ≤ 5' : '')), ps(60), tm('Luk Dim Boon Kwan — Tam Lai', 600, 'Léger, après la rando')] };
+    default: return { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] };
+  }
+}
+const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : passageN1(L.n); };
+function descN1(w) {
+  return ['Formes Tam Lai + physio A', 'Marche Z2 ' + Z2[w] + ' min + circuit cervical', 'Force A · pompes, tirages, coiffe', 'Physio B + circuit gainage',
+    'Muk Yan Jong + Baat Jaam Do', 'Marche Z2 ' + Z2[w] + ' min + retour au calme', 'Force B + Siu Lim Tao ' + (w % 2 ? 'Chan Wah Shun' : 'Ip Man'),
+    'Rando ' + RANDO[w] + ' km + Luk Dim Boon Kwan', 'Yoga Iyengar · leçon 1'];
+}
+function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); return L.c.id === 0 ? DESC : descN1(Math.min(3, Math.floor((L.n - 1) / 9))); }
 // Semaine type du niveau 0 (même programme que Ma Vie). p = index du passage (0-8) ; sinon libre.
 const DESC = ['Formes · Siu Lim Tao, kicks, physio', 'Marche 30 min + circuit cervical', 'Physio B · flexion de hanche', 'Formes · Chum Kiu, Biu Jee',
   'Physio B + circuit gainage', 'Marche 35 min + retour au calme', 'Formes + armes (Baat Jaam Do)', 'Marche longue 40 min', 'Yoga Iyengar · leçon 1'];
@@ -200,6 +240,7 @@ function faitesAujourdhui() {
 function carteAujourdhui() {
   const td = today(), plan = PLAN_SEM[idxJour(td)], faites = faitesAujourdhui();
   let k = 0, h = '<div class="card"><h3>Au programme · ' + JOURS_FR[idxJour(td)] + '</h3>';
+  const DESC = descActuelle();
   plan.forEach(e => {
     if (e.libre) { h += '<div class="row" style="padding:6px 0"><div style="color:var(--txt3);font-size:18px">' + e.m + ' · ' + esc(e.libre) + '</div></div>'; return; }
     const fait = k < faites; k++;
@@ -283,7 +324,13 @@ function seancesFaites() {
   });
   return vus.size;
 }
-function prochaineScene() { return Math.min(seancesFaites() + 1, CH.scenes.length + 1); }
+function prochaineScene() { return Math.min(seancesFaites() + 1, TOTAL + 1); }
+// Version de la scène : « Nette » si au moins 3 jours sans alcool dans les 7 derniers jours, sinon « Brume ».
+const CLAIR_MIN = 3;
+const FIN = { 0: 'Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.',
+              1: 'Tu as traversé le Long Noir, et Tobin marche avec toi. La suite — la Forêt de pylônes — arrive bientôt.' };
+function joursSobres7() { const set = joursSobres(), d = new Date(today() + 'T12:00:00'); let c = 0; for (let i = 0; i < 7; i++) { if (set.has(localDateStr(d))) c++; d.setDate(d.getDate() - 1); } return c; }
+const versionNette = () => joursSobres7() >= CLAIR_MIN;
 function joursAlcoolJournal() {
   const set = new Set();
   S.journal.forEach(e => {
@@ -379,10 +426,11 @@ function artSvg(n) {
 }
 // Cadrage par scène : point d'intérêt de l'image (x% y%) dans le lecteur (paysage) et pendant le Passage (portrait).
 const FOCUS = { 4: { read: '50% 20%', play: '62% 50%' }, 5: { read: '50% 30%', play: '60% 50%' }, 6: { read: '50% 40%', play: '47% 50%' }, 7: { read: '50% 45%', play: '52% 50%' }, 3: { read: '50% 40%', play: '66% 50%' }, 1: { read: '50% 35%', play: '51% 50%' }, 2: { read: '50% 40%', play: '48% 50%' }, 8: { read: '50% 40%', play: '61% 50%' }, 9: { read: '50% 30%', play: '36% 50%' }, 10: { read: '50% 40%', play: '50% 50%' }, 11: { read: '50% 40%', play: '74% 50%' }, 12: { read: '50% 40%', play: '50% 50%' }, 13: { read: '50% 40%', play: '57% 50%' }, 14: { read: '50% 40%', play: '45% 50%' }, 15: { read: '50% 40%', play: '36% 50%' }, 16: { read: '50% 40%', play: '50% 50%' }, 17: { read: '50% 40%', play: '52% 50%' }, 18: { read: '50% 40%', play: '54% 50%' } };
-const foc = (n, k) => (FOCUS[n] && FOCUS[n][k]) || '50% 50%';
+const FOCUS_CH = { 0: FOCUS, 1: { 35: { read: '50% 40%', play: '60% 50%' } } };
+const foc = (g, k) => { const L = loc(g), F = FOCUS_CH[L.c.id] || {}; return (F[L.n] && F[L.n][k]) || '50% 50%'; };
+const imgSrc = g => { const L = loc(g); return 'images/ch' + L.c.id + '/s' + String(L.n).padStart(2, '0') + '.jpg'; };
 function artHtml(n) {
-  const nn = String(n).padStart(2, '0');
-  return '<div class="art">' + artSvg(n) + '<img src="images/ch0/s' + nn + '.jpg" alt="" style="object-position:' + foc(n, 'read') + '" onerror="this.remove()"><div class="fogv"></div></div>';
+  return '<div class="art">' + artSvg(n) + '<img src="' + imgSrc(n) + '" alt=""" style="object-position:' + foc(n, 'read') + '" onerror="this.remove()"><div class="fogv"></div></div>';
 }
 
 // ───────────────────────── VUES ─────────────────────────
@@ -402,8 +450,9 @@ function render() {
 function go(view, n) { S.view = view; if (n) S.scene = n; window.scrollTo(0, 0); render(); }
 
 function vHome() {
-  const faits = seancesFaites(), next = prochaineScene(), tot = CH.scenes.length, fini = next > tot;
-  const cur = Math.min(next, tot), sc = CH.scenes[cur - 1];
+  const faits = seancesFaites(), next = prochaineScene(), fini = next > TOTAL;
+  const cur = Math.min(next, TOTAL), L = loc(cur), CH = L.c, b = base(CH), sc = L.sc, tot = CH.scenes.length;
+  const faitsCh = Math.max(0, Math.min(tot, faits - b));
   const serie = serieSobre(), clarte = Math.min(serie, CLARTE_MAX), td = today();
   const hier = localDateStr(new Date(Date.now() - 864e5));
   const sob = jour => { const bu = joursAlcoolJournal().has(jour), ok = joursSobres().has(jour), lib = jour === td ? "Aujourd'hui" : 'Hier';
@@ -414,38 +463,40 @@ function vHome() {
   let h = '<div class="top"><div class="logo">Vesp<i>e</i>r</div><button class="pill" id="pill" onclick="sync()">SYNC</button></div>';
   h += '<div class="kicker">Chapitre ' + CH.id + ' · ' + esc(CH.titre) + '</div>';
   h += artHtml(cur);
-  h += '<div class="wrap"><h1 class="title">' + (fini ? 'Fin du chapitre ' + CH.id : 'Scène ' + cur + ' · ' + esc(sc.titre)) + '</h1>';
-  h += '<div class="sub">' + faits + ' / ' + tot + ' scènes accomplies</div>';
-  h += fini ? '<p style="font-size:19px;margin-top:14px;color:var(--txt2)">Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.</p>'
+  h += '<div class="wrap"><h1 class="title">' + (fini ? 'Fin du chapitre ' + CH.id : 'Scène ' + L.n + ' · ' + esc(sc.titre)) + '</h1>';
+  h += '<div class="sub">' + faitsCh + ' / ' + tot + ' scènes accomplies</div>';
+  h += fini ? '<p style="font-size:19px;margin-top:14px;color:var(--txt2)">' + (FIN[CH.id] || 'La suite arrive bientôt.') + '</p>'
             : '<button class="btn" onclick="go(\'read\',' + cur + ')">Continuer l\'histoire</button>';
   h += carteAujourdhui();
-  h += '<div class="dots">' + CH.scenes.map(s => '<span class="dot ' + (s.n <= faits ? 'done' : s.n === next ? 'cur' : '') + '"></span>').join('') + '</div>';
+  h += '<div class="dots">' + CH.scenes.map(s => '<span class="dot ' + (b + s.n <= faits ? 'done' : b + s.n === next ? 'cur' : '') + '"></span>').join('') + '</div>';
   h += '<div class="card"><h3>Clarté · jours sans alcool</h3><div class="row"><div style="font-size:20px">Série : ' + serie + ' jour' + (serie > 1 ? 's' : '') + '</div><div class="sub">' + clarte + ' / ' + CLARTE_MAX + '</div></div>' +
        '<div class="bar"><div style="width:' + (clarte / CLARTE_MAX * 100) + '%"></div></div>' +
        '<div style="margin-top:8px">' + sob(hier) + sob(td) + '</div></div>';
-  h += '<div class="card"><h3>Scènes</h3><div class="list">' + CH.scenes.map(s => {
-    const st = s.n <= faits ? 'done' : s.n === next ? 'cur' : 'lock';
-    return '<button class="li ' + (st === 'lock' ? 'lock' : st === 'cur' ? 'cur' : '') + '" onclick="go(\'read\',' + s.n + ')"><span class="n">' + String(s.n).padStart(2, '0') + '</span><span class="t">' + (st === 'lock' ? '· · ·' : esc(s.titre)) + '</span>' + (st === 'done' ? '<span class="c">✓</span>' : '') + '</button>'; }).join('') + '</div></div>';
+  h += '<div class="card"><h3>Scènes · chapitre ' + CH.id + '</h3><div class="list">' + CH.scenes.map(s => {
+    const g = b + s.n, st = g <= faits ? 'done' : g === next ? 'cur' : 'lock';
+    return '<button class="li ' + (st === 'lock' ? 'lock' : st === 'cur' ? 'cur' : '') + '" onclick="go(\'read\',' + g + ')"><span class="n">' + String(s.n).padStart(2, '0') + '</span><span class="t">' + (st === 'lock' ? '· · ·' : esc(s.titre)) + '</span>' + (st === 'done' ? '<span class="c">✓</span>' : '') + '</button>'; }).join('') + '</div>' +
+       CHAPS.filter(c => c !== CH && base(c) < faits).map(c => '<button class="mini off" style="margin-top:10px" onclick="go(\'read\',' + (base(c) + 1) + ')">Relire le chapitre ' + c.id + ' · ' + esc(c.titre) + '</button>').join(' ') + '</div>';
   h += '<div class="foot">version ' + APP_VERSION + ' · ' + (S.wcSeances || []).length + ' séances lues' + (S.pending.length ? ' · ' + S.pending.length + ' en attente d\'envoi' : '') +
        '<br><a href="' + MA_VIE_URL + '">Ouvrir Ma Vie</a></div></div>';
   return h;
 }
 
 function vRead() {
-  const n = S.scene, sc = CH.scenes[n - 1], next = prochaineScene(), faits = seancesFaites();
+  const n = S.scene, L = loc(n), CH = L.c, sc = L.sc, next = prochaineScene(), faits = seancesFaites();
+  const brume = !!(sc.brume && !versionNette()), paras = brume ? sc.brume : sc.paras;
   const p = sc.passage, pa = passageDe(n);
   let h = '<div class="nav"><button onclick="go(\'home\')">‹ Accueil</button><button id="pill" class="pill" style="border:none;background:none" onclick="sync()"></button></div>';
   h += artHtml(n);
-  h += '<div class="story"><div class="meta">Chapitre ' + CH.id + ' · Scène ' + n + ' / ' + CH.scenes.length + '</div><h2>' + esc(sc.titre) + '</h2>';
-  h += sc.paras.map((t, i) => '<p style="animation-delay:' + (0.3 + i * 0.9) + 's">' + esc(t) + '</p>').join('') + '</div>';
-  h += '<div class="passage" style="animation-delay:' + (0.6 + sc.paras.length * 0.9) + 's"><div class="ph">Passage ' + String(n).padStart(2, '0') + '</div><div class="pt">' + esc(p.titre) + '</div><div class="pl">' +
+  h += '<div class="story"><div class="meta">Chapitre ' + CH.id + ' · Scène ' + L.n + ' / ' + CH.scenes.length + (brume ? ' · Brume' : '') + '</div><h2>' + esc(sc.titre) + '</h2>';
+  h += paras.map((t, i) => '<p style="animation-delay:' + (0.3 + i * 0.9) + 's">' + esc(t) + '</p>').join('') + '</div>';
+  h += '<div class="passage" style="animation-delay:' + (0.6 + paras.length * 0.9) + 's"><div class="ph">Passage ' + String(L.n).padStart(2, '0') + '</div><div class="pt">' + esc(p.titre) + '</div><div class="pl">' +
        p.lignes.map(l => '<div>' + esc(l) + '</div>').join('') + '</div><div class="pl" style="margin-top:8px;color:var(--txt3)">≈ ' + dureeMin(pa) + ' min au total</div></div>';
   h += '<div class="wrap">';
   if (n <= faits) h += '<div class="btn ghost" style="text-align:center">✓ Passage accompli</div>';
   else if (n === next) h += '<button class="btn" onclick="startPassage(' + n + ')">Commencer le Passage</button>';
   else h += '<div class="btn ghost" style="text-align:center">Passage verrouillé</div>';
   h += '<div class="row" style="margin-top:14px"><button class="mini off" ' + (n > 1 ? '' : 'disabled') + ' onclick="go(\'read\',' + (n - 1) + ')">‹ Précédente</button>' +
-       '<button class="mini off" ' + (n < CH.scenes.length && n < next ? '' : 'disabled') + ' onclick="go(\'read\',' + (n + 1) + ')">Suivante ›</button></div></div>';
+       '<button class="mini off" ' + (n < TOTAL && n < next ? '' : 'disabled') + ' onclick="go(\'read\',' + (n + 1) + ')">Suivante ›</button></div></div>';
   return h;
 }
 
@@ -502,7 +553,7 @@ function drawPlay() {
   } else {
     const s = P.steps[P.i], rest = !!s.pause, nom = rest ? 'Respire' : (s.nom || s.timer), nx = P.steps[P.i + 1];
     const left = P.pause ? P.rest : Math.max(0, P.end - Date.now());
-    h = '<div class="player"><div class="pbg">' + artSvg(P.n) + '<img src="images/ch0/s' + String(P.n).padStart(2, '0') + '.jpg" alt="" style="object-position:' + foc(P.n, 'play') + '" onerror="this.remove()"><div class="fogv"></div></div><div class="ph">Passage ' + String(P.n).padStart(2, '0') + ' · étape ' + (P.i + 1) + ' / ' + P.steps.length + '</div>' +
+    h = '<div class="player"><div class="pbg">' + artSvg(P.n) + '<img src="' + imgSrc(P.n) + '" alt="" style="object-position:' + foc(P.n, 'play') + '" onerror="this.remove()"><div class="fogv"></div></div><div class="ph">Passage ' + String(loc(P.n).n).padStart(2, '0') + ' · étape ' + (P.i + 1) + ' / ' + P.steps.length + '</div>' +
         '<div class="nm">' + esc(nom) + '</div><div class="dt">' + esc(rest ? 'Pause — reprends ton souffle' : (s.detail || (s.mp3 ? 'Écoute la voix' : ''))) + '</div>' +
         '<div class="tm ' + (rest ? 'rest' : '') + '" id="tm">' + fmt(left) + '</div>' +
         '<div class="nx">Reste au total : <span id="tot">' + fmt(restTotal(left)) + '</span></div>' +
@@ -521,7 +572,7 @@ function drawSuivi() {
   const exs = []; const vus = new Set();
   P.steps.forEach(st => (st.ex || []).forEach(([id, nom]) => { if (EX_AVEC_PROGRESSION.has(id) && !vus.has(id)) { vus.add(id); exs.push([id, nom]); } }));
   const grid = (cls, from, to, fn) => { let h = ''; for (let i = from; i <= to; i++) h += '<button class="nb ' + cls + '" data-v="' + i + '" onclick="' + fn + '(' + i + ',this)">' + i + '</button>'; return h; };
-  let h = '<div class="player sv"><div class="ph">Passage ' + String(P.n).padStart(2, '0') + '</div><h2>Passage accompli</h2>' +
+  let h = '<div class="player sv"><div class="ph">Passage ' + String(loc(P.n).n).padStart(2, '0') + '</div><h2>Passage accompli</h2>' +
     '<p class="lead">Tu as tenu. Comment ton corps l\'a-t-il pris ?</p>' +
     '<label>Effort perçu (RPE)</label><div class="grid" id="g-rpe">' + grid('', 1, 10, 'svRpe') + '</div>' +
     '<label>Niveau de douleur maintenant</label><div class="grid" id="g-pain">' + grid('pn', 0, 10, 'svPain') + '</div>' +
@@ -547,7 +598,7 @@ async function terminer(sansSuivi) {
   await enregistrerSeance(n, sv.rpe, sansSuivi ? null : { pain: sv.pain, locs: sv.locs || [], evals: sv.evals || {}, note: note.trim() });
   S.play = null;
   const next = prochaineScene(); S.lues[n] = 1; jset(LUE_KEY, S.lues);
-  go(next <= CH.scenes.length ? 'read' : 'home', next <= CH.scenes.length ? next : 0);
+  go(next <= TOTAL ? 'read' : 'home', next <= TOTAL ? next : 0);
 }
 
 // ───────────────────────── DÉMARRAGE ─────────────────────────
