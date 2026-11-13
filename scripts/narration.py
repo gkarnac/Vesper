@@ -33,7 +33,7 @@ import tempfile
 import urllib.request
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VOIX_DEFAUT = "fr-CA-Chirp3-HD-Charon"   # à remplacer par la voix choisie après --essai
+VOIX_DEFAUT = "fr-CA-Chirp3-HD-Algieba"  # choisie le 13 nov. 2026 (essai de voix)
 DEBIT = 0.90                             # un peu lent : registre grave, posé (esprit Thief)
 BITRATE = "64k"
 SILENCE_DEBUT = 0.6                      # secondes avant la première phrase
