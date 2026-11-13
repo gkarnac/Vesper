@@ -15,7 +15,7 @@ window.VESPER_CH0 = {
     "titre": "Réveiller la machine",
     "lignes": [
      "Échauffement Wing Chun (7 min) · Kicks, 5 types (4 min)",
-     "Siu Lim Tao, sans veste, forme complète (7 min)",
+     "Siu Lim Tao, Tam Lai, forme complète (7 min)",
      "Physio : abduction de hanche (5 min)"
     ]
    },
@@ -67,7 +67,7 @@ window.VESPER_CH0 = {
     "titre": "Les deux mouvements",
     "lignes": [
      "Échauffement (7 min) · Kicks, 5 types (4 min)",
-     "Chum Kiu (7 min) · Biu Jee (7 min), sans veste, formes complètes",
+     "Chum Kiu, Tam Lai (7 min) · Biu Jee, Tam Lai (7 min), formes complètes",
      "Physio : abduction de hanche (5 min)"
     ]
    },
@@ -117,8 +117,8 @@ window.VESPER_CH0 = {
     "titre": "Le geste ancien",
     "lignes": [
      "Échauffement (7 min)",
-     "Siu Lim Tao, sans veste (7 min)",
-     "Baat Jaam Do, Tam Lê (7 min) · Baat Jaam Do, Ip Man (7 min)"
+     "Siu Lim Tao, Tam Lai (7 min)",
+     "Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)"
     ]
    },
    "image": "grande salle industrielle abandonnée, courroies suspendues, faisceau cyan tombant d'une lucarne, silhouette en posture de forme au centre, poussière en suspension."
@@ -165,7 +165,7 @@ window.VESPER_CH0 = {
     "titre": "Reprise du fil",
     "lignes": [
      "Échauffement (7 min) · Kicks, 5 types (4 min)",
-     "Siu Lim Tao, sans veste (7 min)",
+     "Siu Lim Tao, Tam Lai (7 min)",
      "Physio : abduction de hanche (5 min)"
     ]
    },
@@ -215,7 +215,7 @@ window.VESPER_CH0 = {
     "titre": "Le signal",
     "lignes": [
      "Échauffement (7 min) · Kicks, 5 types (4 min)",
-     "Chum Kiu (7 min) · Biu Jee (7 min), sans veste, formes complètes",
+     "Chum Kiu, Tam Lai (7 min) · Biu Jee, Tam Lai (7 min), formes complètes",
      "Physio : abduction de hanche (5 min)"
     ]
    },
@@ -266,8 +266,8 @@ window.VESPER_CH0 = {
     "titre": "Ce qu'on ne dit pas",
     "lignes": [
      "Échauffement (7 min)",
-     "Siu Lim Tao, sans veste (7 min)",
-     "Baat Jaam Do, Tam Lê (7 min) · Baat Jaam Do, Ip Man (7 min)"
+     "Siu Lim Tao, Tam Lai (7 min)",
+     "Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)"
     ]
    },
    "image": "salle industrielle, deux silhouettes face à face avec des lames d'entraînement, échange de gestes figé, faisceau magenta et cyan qui se croisent, poussière en suspension."

@@ -15,7 +15,7 @@ Dans l'appartement, rien n'a changé. La bouteille est sur la table, la lumière
 
 > **PASSAGE 01 · Réveiller la machine**
 > Échauffement Wing Chun (7 min) · Kicks, 5 types (4 min)
-> Siu Lim Tao, sans veste, forme complète (7 min)
+> Siu Lim Tao, Tam Lai, forme complète (7 min)
 > Physio : abduction de hanche (5 min)
 
 *Image : fenêtre d'un petit appartement, toits nets sous un ciel bleu-violet, silhouette de dos à contre-jour, une bouteille ambrée sur la table au premier plan, lumière froide.*
@@ -54,7 +54,7 @@ Tu la regardes. Les chiffres dans la marge, les petites flèches, la façon de b
 
 > **PASSAGE 04 · Les deux mouvements**
 > Échauffement (7 min) · Kicks, 5 types (4 min)
-> Chum Kiu (7 min) · Biu Jee (7 min), sans veste, formes complètes
+> Chum Kiu, Tam Lai (7 min) · Biu Jee, Tam Lai (7 min), formes complètes
 > Physio : abduction de hanche (5 min)
 
 *Image : mains tenant un morceau de carte jauni et déchiré, écriture manuscrite visible, lueur cyan sur le papier, visage d'Ilse flou en arrière-plan, brume.*
@@ -89,8 +89,8 @@ Tu t'avances au centre. Tu laisses tes mains faire ce qu'elles savent. Les forme
 
 > **PASSAGE 07 · Le geste ancien**
 > Échauffement (7 min)
-> Siu Lim Tao, sans veste (7 min)
-> Baat Jaam Do, Tam Lê (7 min) · Baat Jaam Do, Ip Man (7 min)
+> Siu Lim Tao, Tam Lai (7 min)
+> Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)
 
 *Image : grande salle industrielle abandonnée, courroies suspendues, faisceau cyan tombant d'une lucarne, silhouette en posture de forme au centre, poussière en suspension.*
 
@@ -126,7 +126,7 @@ Tu ne sais plus si c'est Ilse ou toi. L'idée te traverse que tu n'as peut-être
 
 > **PASSAGE 10 · Reprise du fil**
 > Échauffement (7 min) · Kicks, 5 types (4 min)
-> Siu Lim Tao, sans veste (7 min)
+> Siu Lim Tao, Tam Lai (7 min)
 > Physio : abduction de hanche (5 min)
 
 *Image : seuil d'une porte d'appartement, papier plié glissé dessous, main qui le ramasse, lumière froide du couloir, ombre d'un homme penché.*
@@ -162,7 +162,7 @@ Tu t'arrêtes. Il n'y a personne. Tu reprends, et le sifflement revient, plus pr
 
 > **PASSAGE 13 · Le signal**
 > Échauffement (7 min) · Kicks, 5 types (4 min)
-> Chum Kiu (7 min) · Biu Jee (7 min), sans veste, formes complètes
+> Chum Kiu, Tam Lai (7 min) · Biu Jee, Tam Lai (7 min), formes complètes
 > Physio : abduction de hanche (5 min)
 
 *Image : salle industrielle vide, silhouette en posture de forme, lumière cyan en biais, au fond une ouverture sombre vers un tunnel ferroviaire d'où vient un reflet métallique.*
@@ -199,8 +199,8 @@ Vos gestes se répondent, s'évitent, se rattrapent. Entre deux passes, Ilse par
 
 > **PASSAGE 16 · Ce qu'on ne dit pas**
 > Échauffement (7 min)
-> Siu Lim Tao, sans veste (7 min)
-> Baat Jaam Do, Tam Lê (7 min) · Baat Jaam Do, Ip Man (7 min)
+> Siu Lim Tao, Tam Lai (7 min)
+> Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)
 
 *Image : salle industrielle, deux silhouettes face à face avec des lames d'entraînement, échange de gestes figé, faisceau magenta et cyan qui se croisent, poussière en suspension.*
 
