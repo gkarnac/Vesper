@@ -143,12 +143,13 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <div id="app"></div>
 <div class="toast" id="toast"></div>
 <audio id="aud" preload="auto" playsinline></audio>
+<audio id="narr" preload="none" playsinline></audio>
 <script src="story/chapitre0.js"></script>
 <script src="story/chapitre1.js"></script>
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '13 nov. 18 h 30';
+const APP_VERSION = '13 nov. 18 h 45';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -443,11 +444,34 @@ function render() {
   applyFog();
   const a = $('app');
   if (S.view === 'home') a.innerHTML = vHome();
-  else if (S.view === 'read') a.innerHTML = vRead();
+  else if (S.view === 'read') { a.innerHTML = vRead(); narrPrep(); }
   else if (S.view === 'play') vPlayInit();
   renderPill();
 }
-function go(view, n) { S.view = view; if (n) S.scene = n; window.scrollTo(0, 0); render(); }
+function go(view, n) { narrStop(); S.view = view; if (n) S.scene = n; window.scrollTo(0, 0); S.narrGo = view === 'read'; render(); }
+
+// ───────────────────────── NARRATION ─────────────────────────
+// audio/ch<N>/s<NN>-nette.mp3 (et -brume.mp3 au chapitre 1). Lecture auto à l'ouverture d'une scène
+// (le clic qui ouvre la scène autorise le son) ; si le fichier n'existe pas encore, le bouton se désactive.
+const NARR_KEY = 'vesper_narr_auto';
+const narrAuto = () => jget(NARR_KEY, true);
+function narrSetAuto(v) { jset(NARR_KEY, !!v); }
+function narrSrc(g) {
+  const L = loc(g), brume = !!(L.sc.brume && !versionNette());
+  return 'audio/ch' + L.c.id + '/s' + String(L.n).padStart(2, '0') + '-' + (brume ? 'brume' : 'nette') + '.mp3';
+}
+function narrBtn(t, off) { const b = $('narr-btn'); if (b) { b.textContent = t; b.disabled = !!off; b.classList.toggle('off', !!off); } }
+function narrPrep() {
+  const n = $('narr'), src = narrSrc(S.scene);
+  n.onended = () => narrBtn('▶ Réécouter');
+  n.onerror = () => narrBtn('Narration à venir', true);
+  n.onplaying = () => narrBtn('❚❚ Pause');
+  n.onpause = () => { if (!n.ended && n.currentTime > 0) narrBtn('▶ Reprendre'); };
+  if (n.dataset.src !== src) { n.dataset.src = src; n.src = src; }
+  if (S.narrGo && narrAuto()) { S.narrGo = false; n.currentTime = 0; n.play().catch(() => narrBtn(n.error ? 'Narration à venir' : '▶ Écouter', !!n.error)); }
+}
+function narrToggle() { const n = $('narr'); if (n.paused) n.play().catch(() => narrBtn('Narration à venir', true)); else n.pause(); }
+function narrStop() { const n = $('narr'); try { n.pause(); } catch (e) {} }
 
 function vHome() {
   const faits = seancesFaites(), next = prochaineScene(), fini = next > TOTAL;
@@ -487,7 +511,9 @@ function vRead() {
   const p = sc.passage, pa = passageDe(n);
   let h = '<div class="nav"><button onclick="go(\'home\')">‹ Accueil</button><button id="pill" class="pill" style="border:none;background:none" onclick="sync()"></button></div>';
   h += artHtml(n);
-  h += '<div class="story"><div class="meta">Chapitre ' + CH.id + ' · Scène ' + L.n + ' / ' + CH.scenes.length + (brume ? ' · Brume' : '') + '</div><h2>' + esc(sc.titre) + '</h2>';
+  h += '<div class="story"><div class="meta">Chapitre ' + CH.id + ' · Scène ' + L.n + ' / ' + CH.scenes.length + (brume ? ' · Brume' : '') + '</div><h2>' + esc(sc.titre) + '</h2>' +
+       '<div class="row" id="narr-bar" style="margin:-8px 0 16px;gap:8px;position:relative;z-index:2"><button class="mini" id="narr-btn" onclick="narrToggle()">▶ Écouter</button>' +
+       '<label class="sub" style="display:flex;align-items:center;gap:6px"><input type="checkbox" ' + (narrAuto() ? 'checked' : '') + ' onchange="narrSetAuto(this.checked)"> lecture auto</label></div>';
   h += paras.map((t, i) => '<p style="animation-delay:' + (0.3 + i * 0.9) + 's">' + esc(t) + '</p>').join('') + '</div>';
   h += '<div class="passage" style="animation-delay:' + (0.6 + paras.length * 0.9) + 's"><div class="ph">Passage ' + String(L.n).padStart(2, '0') + '</div><div class="pt">' + esc(p.titre) + '</div><div class="pl">' +
        p.lignes.map(l => '<div>' + esc(l) + '</div>').join('') + '</div><div class="pl" style="margin-top:8px;color:var(--txt3)">≈ ' + dureeMin(pa) + ' min au total</div></div>';
@@ -507,6 +533,7 @@ function wakeOff() { try { if (wake) wake.release(); } catch (e) {} wake = null;
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && S.play && !S.play.fini) wakeOn(); });
 
 function startPassage(n) {
+  narrStop();
   const aud = $('aud');
   S.play = { n, steps: passageDe(n).steps, i: -1, pause: false, fini: false, end: 0, rest: 0 };
   // déverrouille l'audio sur ce geste de l'utilisateur
