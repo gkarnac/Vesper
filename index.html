@@ -146,10 +146,11 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <audio id="narr" preload="none" playsinline></audio>
 <script src="story/chapitre0.js"></script>
 <script src="story/chapitre1.js"></script>
+<script src="story/chapitre2.js"></script>
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '13 nov. 18 h 45';
+const APP_VERSION = '16 nov. 7 h 45';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -157,7 +158,7 @@ const START = '2026-11-09';          // début du niveau 0 (même départ que Ma
 const SOBRE_HAB_ID = 'sobre-jour';
 const MOTS_ALCOOL = ['bière','biere','vin','alcool','cidre','fort','scotch','whisky','vodka','rhum','gin','cocktail'];
 // Chapitres enchaînés : la scène globale g (1, 2, 3…) avance d'une scène par séance complétée.
-const CHAPS = [window.VESPER_CH0, window.VESPER_CH1].filter(Boolean);
+const CHAPS = [window.VESPER_CH0, window.VESPER_CH1, window.VESPER_CH2].filter(Boolean);
 const TOTAL = CHAPS.reduce((a, c) => a + c.scenes.length, 0);
 function loc(g) {
   let k = g;
@@ -213,13 +214,41 @@ function passageN1(n) {
     default: return { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] };
   }
 }
-const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : passageN1(L.n); };
+// ───────────────────── PASSAGES (niveau 2 · Charge) ─────────────────────
+// Six semaines ; la rando reste à 12 km (10 km en semaine de décharge) et c'est le sac qui monte.
+const SAC = ['10', '12,5', '15', '15', '20', '20'], RANDO2 = [12, 12, 12, 10, 12, 12];
+const RDL = mp('rdl.mp3', 'Soulevé de terre roumain', 248, [['ex-999-rdl','Soulevé de terre roumain']]);
+const FENTES = mp('jeudi-fentes.mp3', 'Fentes — descente lente', 552, [['ex-020','Fentes stationnaires']]);
+const PORTAGE = mp('portage.mp3', 'Portage — boîte et pointes', 928, [['ex-027','Montées sur boîte']]);
+const marcheZ2 = (min) => tm('Marche Z2 — ' + min + ' min', min * 60, '129 à 141 bpm · rythme régulier');
+function passageN2(n) {
+  const w = Math.min(5, Math.floor((n - 1) / 9)), p = (n - 1) % 9, pair = w % 2 === 1;
+  const note = w === 3 ? ' · semaine de décharge' : w === 4 ? ' · test 1 : note la douleur du lendemain' : w === 5 ? ' · test 2 : note la douleur du lendemain' : '';
+  switch (p) {
+    case 0: return { type: 'Charge — Formes', steps: [WARM, ps(30), FORME('Siu Lim Tao'), ps(20), FORME('Chum Kiu'), ps(20), FORME('Biu Jee'), ps(30), PHA] };
+    case 1: return { type: 'Charge — Marche Z2', steps: [marcheZ2(45), ps(30), mp('cervical-circuit.mp3', 'Circuit cervical', 310)] };
+    case 2: return { type: 'Charge — Force A', steps: [WARM, ps(30), KICK, ps(30), PUSHPULL, ps(30), COIFFE] };
+    case 3: return { type: 'Charge — Physio B + Gainage', steps: [WARM, ps(30), PHB, ps(30), CORE] };
+    case 4: return { type: 'Charge — Mannequin + Armes', steps: [WARM, ps(30), tm('Muk Yan Jong — Tam Lai', 720, 'Forme complète'), ps(20), FORME('Baat Jaam Do')]
+                       .concat(pair ? [ps(20), tm('Baat Jaam Do — Ip Man', 420, 'Forme complète')] : []) };
+    case 5: return { type: 'Charge — Portage + Marche Z2', steps: [PORTAGE, ps(60), marcheZ2(30)] };
+    case 6: return { type: 'Charge — Force B jambes', steps: [WARM, ps(30), RDL, ps(30), FENTES, ps(30), COIFFE, ps(30), tm('Siu Lim Tao — ' + (pair ? 'Chan Wah Shun' : 'Ip Man'), 420, 'Forme complète')] };
+    case 7: return { type: 'Charge — Rando avec sac', steps: [tm('Rando — ' + RANDO2[w] + ' km · sac de ' + SAC[w] + ' lb', Math.round(RANDO2[w] / 3 * 3600), 'Environ 3 km/h' + note), ps(60), tm('Luk Dim Boon Kwan — Tam Lai', 600, 'Léger, après la rando')] };
+    default: return { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] };
+  }
+}
+function descN2(w) {
+  return ['Formes Tam Lai + physio A', 'Marche Z2 45 min + circuit cervical', 'Force A · pompes, tirages, coiffe', 'Physio B + circuit gainage',
+    'Muk Yan Jong + Baat Jaam Do', 'Portage + marche Z2 30 min', 'Force B jambes + Siu Lim Tao ' + (w % 2 ? 'Chan Wah Shun' : 'Ip Man'),
+    'Rando ' + RANDO2[w] + ' km · sac de ' + SAC[w] + ' lb + Luk Dim Boon Kwan', 'Yoga Iyengar · leçon 1'];
+}
+const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : L.c.id === 1 ? passageN1(L.n) : passageN2(L.n); };
 function descN1(w) {
   return ['Formes Tam Lai + physio A', 'Marche Z2 ' + Z2[w] + ' min + circuit cervical', 'Force A · pompes, tirages, coiffe', 'Physio B + circuit gainage',
     'Muk Yan Jong + Baat Jaam Do', 'Marche Z2 ' + Z2[w] + ' min + retour au calme', 'Force B + Siu Lim Tao ' + (w % 2 ? 'Chan Wah Shun' : 'Ip Man'),
     'Rando ' + RANDO[w] + ' km + Luk Dim Boon Kwan', 'Yoga Iyengar · leçon 1'];
 }
-function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); return L.c.id === 0 ? DESC : descN1(Math.min(3, Math.floor((L.n - 1) / 9))); }
+function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); const w = Math.floor((L.n - 1) / 9); return L.c.id === 0 ? DESC : L.c.id === 1 ? descN1(Math.min(3, w)) : descN2(Math.min(5, w)); }
 // Semaine type du niveau 0 (même programme que Ma Vie). p = index du passage (0-8) ; sinon libre.
 const DESC = ['Formes · Siu Lim Tao, kicks, physio', 'Marche 30 min + circuit cervical', 'Physio B · flexion de hanche', 'Formes · Chum Kiu, Biu Jee',
   'Physio B + circuit gainage', 'Marche 35 min + retour au calme', 'Formes + armes (Baat Jaam Do)', 'Marche longue 40 min', 'Yoga Iyengar · leçon 1'];
@@ -330,7 +359,8 @@ function prochaineScene() { return Math.min(seancesFaites() + 1, TOTAL + 1); }
 // Jours sans alcool requis sur 7 pour la version Nette, par chapitre (cible du niveau).
 const CLAIR_MIN = { 0: 2, 1: 4, 2: 5 };
 const FIN = { 0: 'Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.',
-              1: 'Tu as traversé le Long Noir, et Tobin marche avec toi. La suite — la Forêt de pylônes — arrive bientôt.' };
+              1: 'Tu as traversé le Long Noir, et Tobin marche avec toi. La suite — la Forêt de pylônes — arrive bientôt.',
+              2: 'Tu es sorti de la forêt sans te retourner. La suite — les Marais de verre — arrive bientôt.' };
 function joursSobres7() { const set = joursSobres(), d = new Date(today() + 'T12:00:00'); let c = 0; for (let i = 0; i < 7; i++) { if (set.has(localDateStr(d))) c++; d.setDate(d.getDate() - 1); } return c; }
 const versionNette = g => joursSobres7() >= (CLAIR_MIN[loc(g).c.id] || 5);
 function joursAlcoolJournal() {
@@ -432,7 +462,7 @@ const FOCUS_CH = { 0: FOCUS, 1: { 35: { read: '50% 40%', play: '60% 50%' } } };
 const foc = (g, k) => { const L = loc(g), F = FOCUS_CH[L.c.id] || {}; return (F[L.n] && F[L.n][k]) || '50% 50%'; };
 const imgSrc = g => { const L = loc(g); return 'images/ch' + L.c.id + '/s' + String(L.n).padStart(2, '0') + '.jpg'; };
 function artHtml(n) {
-  return '<div class="art">' + artSvg(n) + '<img src="' + imgSrc(n) + '" alt=""" style="object-position:' + foc(n, 'read') + '" onerror="this.remove()"><div class="fogv"></div></div>';
+  return '<div class="art">' + artSvg(n) + '<img src="' + imgSrc(n) + '" alt="" style="object-position:' + foc(n, 'read') + '" onerror="this.remove()"><div class="fogv"></div></div>';
 }
 
 // ───────────────────────── VUES ─────────────────────────
