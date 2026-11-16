@@ -4,7 +4,7 @@ Niveau 1 · Base aérobie · 4 semaines · 36 scènes (23 nov. → 20 déc. 2026
 
 **Arc du chapitre :** semaine 1, les rails (le rythme, les dates de demain) · semaine 2, Tobin (le passeur) · semaine 3, le Conseil (la source de la Brume) · semaine 4, le tunnel (climax, tests du critère). Fin : Tobin accepte de t'accompagner, sans dire pourquoi.
 
-**Clarté :** chaque scène existe en deux versions qui racontent les mêmes événements. **Nette** quand la série de jours sans alcool tient (cible du niveau : 3 jours par semaine) ; **Brume** quand elle est cassée : brume plus épaisse, phrases plus lentes, la tentation plus présente, aucune punition. Règle proposée pour l'app : version nette si au moins 3 jours sans alcool dans les 7 derniers jours.
+**Clarté :** chaque scène existe en deux versions qui racontent les mêmes événements. **Nette** quand la série de jours sans alcool tient (cible du niveau : 4 jours par semaine) ; **Brume** quand elle est cassée : brume plus épaisse, phrases plus lentes, la tentation plus présente, aucune punition. Règle proposée pour l'app : version nette si au moins 4 jours sans alcool dans les 7 derniers jours.
 
 **Semaine type :** lundi formes Tam Lai + physio A / soir marche Z2 · mardi force A · mercredi physio B + gainage · jeudi Muk Yan Jong + Baat Jaam Do / soir marche Z2 · vendredi force B + Siu Lim Tao Ip Man (sem. 1 et 3) ou Chan Wah Shun (sem. 2 et 4) · samedi rando + Luk Dim Boon Kwan · dimanche yoga. Baat Jaam Do Ip Man le jeudi des semaines 2 et 4.
 **Progression :** marche Z2 30 → 35 → 40 → 45 min · rando 10 → 11 → 11 → 12 km. **Critère :** Z2 45 min en continu et rando de 12 km à RPE ≤ 5 (semaine 4).

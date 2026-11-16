@@ -326,12 +326,13 @@ function seancesFaites() {
   return vus.size;
 }
 function prochaineScene() { return Math.min(seancesFaites() + 1, TOTAL + 1); }
-// Version de la scène : « Nette » si au moins 3 jours sans alcool dans les 7 derniers jours, sinon « Brume ».
-const CLAIR_MIN = 3;
+// Version de la scène : « Nette » si la cible de jours sans alcool du niveau est atteinte sur les 7 derniers jours, sinon « Brume ».
+// Jours sans alcool requis sur 7 pour la version Nette, par chapitre (cible du niveau).
+const CLAIR_MIN = { 0: 2, 1: 4, 2: 5 };
 const FIN = { 0: 'Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.',
               1: 'Tu as traversé le Long Noir, et Tobin marche avec toi. La suite — la Forêt de pylônes — arrive bientôt.' };
 function joursSobres7() { const set = joursSobres(), d = new Date(today() + 'T12:00:00'); let c = 0; for (let i = 0; i < 7; i++) { if (set.has(localDateStr(d))) c++; d.setDate(d.getDate() - 1); } return c; }
-const versionNette = () => joursSobres7() >= CLAIR_MIN;
+const versionNette = g => joursSobres7() >= (CLAIR_MIN[loc(g).c.id] || 5);
 function joursAlcoolJournal() {
   const set = new Set();
   S.journal.forEach(e => {
@@ -457,7 +458,7 @@ const NARR_KEY = 'vesper_narr_auto';
 const narrAuto = () => jget(NARR_KEY, true);
 function narrSetAuto(v) { jset(NARR_KEY, !!v); }
 function narrSrc(g) {
-  const L = loc(g), brume = !!(L.sc.brume && !versionNette());
+  const L = loc(g), brume = !!(L.sc.brume && !versionNette(g));
   return 'audio/ch' + L.c.id + '/s' + String(L.n).padStart(2, '0') + '-' + (brume ? 'brume' : 'nette') + '.mp3';
 }
 function narrBtn(t, off) { const b = $('narr-btn'); if (b) { b.textContent = t; b.disabled = !!off; b.classList.toggle('off', !!off); } }
@@ -507,7 +508,7 @@ function vHome() {
 
 function vRead() {
   const n = S.scene, L = loc(n), CH = L.c, sc = L.sc, next = prochaineScene(), faits = seancesFaites();
-  const brume = !!(sc.brume && !versionNette()), paras = brume ? sc.brume : sc.paras;
+  const brume = !!(sc.brume && !versionNette(n)), paras = brume ? sc.brume : sc.paras;
   const p = sc.passage, pa = passageDe(n);
   let h = '<div class="nav"><button onclick="go(\'home\')">‹ Accueil</button><button id="pill" class="pill" style="border:none;background:none" onclick="sync()"></button></div>';
   h += artHtml(n);
