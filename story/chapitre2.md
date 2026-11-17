@@ -1483,7 +1483,7 @@ Tu reprends ta forme. Demain, il y en aura mille autres, intacts, pleins d'or. M
 > Muk Yan Jong, Tam Lai (12 min)
 > Baat Jaam Do, Tam Lai (7 min)
 
-*Image : grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente orange au fond.*
+*Image : grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente à double toit rouge au fond.*
 
 ### Scène 42 — Tout
 **Nette**

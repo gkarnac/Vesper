@@ -147,7 +147,7 @@ intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renvers�
 intérieur d'une tente de randonnée deux places à arceaux croisés, double toit rouge, à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.
 
 **Image 41 · Le câble**
-grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente orange au fond.
+grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente à double toit rouge au fond.
 
 **Image 42 · Tout**
 lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente roulée dans sa housse orange sanglée dessus, sac de couchage dans sa housse bleue, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante.
