@@ -1373,7 +1373,7 @@ Tu pousses la poutrelle. Elle bouge d'un doigt. Tu passes dessous, tu tires par 
 
 La poutrelle tombe sur le côté. Tu tires la porte.
 
-Le magasin d'une équipe de ligne. Des étagères. Des bobines de câble, des isolateurs, des casques. Et deux housses de toile orange, rangées côte à côte.
+Le magasin d'une équipe de ligne. Des étagères. Des bobines de câble, des isolateurs, des casques. Et deux housses, rangées côte à côte : une orange, une bleue.
 
 La première est longue et étroite. Tu ouvres la fermeture : des arceaux, une toile, des piquets. Une tente.
 
@@ -1386,7 +1386,7 @@ Le relais est à moitié effondré. La porte du magasin est coincée sous une po
 
 Tu pousses la poutrelle. Tu tires. Tes bras répondent mieux que depuis des semaines. Tu pousses encore. Elle tombe.
 
-Des étagères. Des bobines, des casques. Deux housses orange.
+Des étagères. Des bobines, des casques. Deux housses, une orange, une bleue.
 
 Une tente. Des arceaux, une toile, des piquets.
 
@@ -1401,7 +1401,7 @@ Tu restes comme ça. Dehors, la tempête. Dedans, quelque chose qui tient chaud 
 > Circuit pompes et tirages (13 min)
 > Coiffe : rotations et élévations (6 min)
 
-*Image : intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renversée, magasin avec étagères de bobines de câble, isolateurs et casques, homme au chandail gris qui serre contre lui deux housses de toile orange, l'une longue contenant une tente, l'autre ronde d'où déborde un sac de couchage, neige qui entre par le toit crevé.*
+*Image : intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renversée, magasin avec étagères de bobines de câble, isolateurs et casques, homme au chandail gris qui serre contre lui deux housses, l'une longue et orange contenant une tente, l'autre ronde et bleue contenant un sac de couchage, neige qui entre par le toit crevé.*
 
 ### Scène 40 — Tenir les arceaux
 **Nette**
@@ -1443,7 +1443,7 @@ Tu ris dans le noir. Demain, elle reviendra. Cette nuit, tu as tenu contre quelq
 > Physio : flexion de hanche (14 min)
 > Circuit gainage (9 min) : hollow body hold, levées de jambes, dead bug
 
-*Image : intérieur d'une tente orange à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.*
+*Image : intérieur d'une tente de randonnée deux places à arceaux croisés, double toit rouge, à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.*
 
 ### Scène 41 — Le câble
 **Nette**
@@ -1518,7 +1518,7 @@ Tu rentres en sueur. La première nappe de brume atteint le relais au crépuscul
 > Portage : boîte et pointes (15 min)
 > Marche en Z2, 30 min (129 à 141 bpm)
 
-*Image : lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente orange sanglée dessus, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante.*
+*Image : lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente roulée dans sa housse orange sanglée dessus, sac de couchage dans sa housse bleue, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante.*
 
 ### Scène 43 — Trois mots
 **Nette**
@@ -1631,7 +1631,7 @@ Tu ne sais pas si ça veut dire zéro, ou trop pour compter. Tu manges ton riz. 
 **Brume**
 Dimanche. Tu te réveilles dans le sac de couchage. Il fait chaud. Une chaleur sèche, à toi, que tu as fabriquée toute la nuit avec ton propre corps.
 
-Tu restes là un moment. Dehors, la brume presse contre la toile orange et la tente brille de l'intérieur comme une lanterne.
+Tu restes là un moment. Dehors, la brume presse contre le double toit rouge et la tente brille de l'intérieur comme une lanterne.
 
 Tu bouges la tête. Le cou est raide, pas plus. L'essai est réussi.
 
@@ -1650,7 +1650,7 @@ La brume te dit de ne plus demander. Que ça fait mal pour rien. Tu manges ton r
 > **PASSAGE 45 · Le verdict du cou**
 > Yoga Iyengar, leçon 1 (environ 25 min)
 
-*Image : tente orange montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu.*
+*Image : tente deux places à double toit rouge montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu.*
 
 ---
 
@@ -1815,7 +1815,7 @@ Tu refermes le carnet. Tu le lui rends. Tes mains tremblent. Tu retournes à ta 
 > Physio : flexion de hanche (14 min)
 > Circuit gainage (9 min) : hollow body hold, levées de jambes, dead bug
 
-*Image : campement au pied d'un grand pylône isolé, tente orange, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue.*
+*Image : campement au pied d'un grand pylône isolé, tente deux places à double toit rouge, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue.*
 
 ### Scène 50 — Le pire guide
 **Nette**
@@ -1853,7 +1853,7 @@ Au campement, il a fait le riz. Tu manges. Vous ne dites rien.
 > Muk Yan Jong, Tam Lai (12 min)
 > Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)
 
-*Image : homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente orange et une silhouette en capuche près d'un feu, aube rouge et violette.*
+*Image : homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente rouge et une silhouette en capuche près d'un feu, aube rouge et violette.*
 
 ### Scène 51 — L'encre
 **Nette**
@@ -2032,7 +2032,7 @@ Tu refermes le carnet. Tu regardes devant.
 > **PASSAGE 54 · Le bord de la plaine**
 > Yoga Iyengar, leçon 1 (environ 25 min)
 
-*Image : homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente orange derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide.*
+*Image : homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente rouge derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide.*
 
 ---
 

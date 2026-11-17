@@ -1119,7 +1119,7 @@ window.VESPER_CH2 = {
     "Le relais est à moitié effondré. Le toit a cédé d'un côté, et la porte du magasin est coincée sous une poutrelle.",
     "Tu pousses la poutrelle. Elle bouge d'un doigt. Tu passes dessous, tu tires par l'autre bout. Tu pousses encore. Dehors, le vent hurle, et ça donne du cœur à l'ouvrage.",
     "La poutrelle tombe sur le côté. Tu tires la porte.",
-    "Le magasin d'une équipe de ligne. Des étagères. Des bobines de câble, des isolateurs, des casques. Et deux housses de toile orange, rangées côte à côte.",
+    "Le magasin d'une équipe de ligne. Des étagères. Des bobines de câble, des isolateurs, des casques. Et deux housses, rangées côte à côte : une orange, une bleue.",
     "La première est longue et étroite. Tu ouvres la fermeture : des arceaux, une toile, des piquets. Une tente.",
     "La deuxième est ronde, molle, comprimée par deux sangles. Tu les défais. Elle gonfle dans tes mains comme quelque chose qui respire. Un sac de couchage.",
     "Tu les serres contre toi. Tu as trouvé, dans cet ordre, de quoi boire, manger, te soigner, te changer, t'asseoir. Il te manquait un endroit où dormir."
@@ -1127,7 +1127,7 @@ window.VESPER_CH2 = {
    "brume": [
     "Le relais est à moitié effondré. La porte du magasin est coincée sous une poutrelle. Le vent a chassé la brume d'ici. Il fait noir, froid, et tu vois clair.",
     "Tu pousses la poutrelle. Tu tires. Tes bras répondent mieux que depuis des semaines. Tu pousses encore. Elle tombe.",
-    "Des étagères. Des bobines, des casques. Deux housses orange.",
+    "Des étagères. Des bobines, des casques. Deux housses, une orange, une bleue.",
     "Une tente. Des arceaux, une toile, des piquets.",
     "Un sac de couchage. Tu défais les sangles. Il gonfle dans tes mains.",
     "Tu enfouis ton visage dedans. Il sent la poussière et le duvet. C'est doux, et pour une fois ce n'est pas elle. C'est juste doux.",
@@ -1141,7 +1141,7 @@ window.VESPER_CH2 = {
      "Coiffe : rotations et élévations (6 min)"
     ]
    },
-   "image": "intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renversée, magasin avec étagères de bobines de câble, isolateurs et casques, homme au chandail gris qui serre contre lui deux housses de toile orange, l'une longue contenant une tente, l'autre ronde d'où déborde un sac de couchage, neige qui entre par le toit crevé."
+   "image": "intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renversée, magasin avec étagères de bobines de câble, isolateurs et casques, homme au chandail gris qui serre contre lui deux housses, l'une longue et orange contenant une tente, l'autre ronde et bleue contenant un sac de couchage, neige qui entre par le toit crevé."
   },
   {
    "n": 40,
@@ -1174,7 +1174,7 @@ window.VESPER_CH2 = {
      "Circuit gainage (9 min) : hollow body hold, levées de jambes, dead bug"
     ]
    },
-   "image": "intérieur d'une tente orange à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan."
+   "image": "intérieur d'une tente de randonnée deux places à arceaux croisés, double toit rouge, à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan."
   },
   {
    "n": 41,
@@ -1235,7 +1235,7 @@ window.VESPER_CH2 = {
      "Marche en Z2, 30 min (129 à 141 bpm)"
     ]
    },
-   "image": "lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente orange sanglée dessus, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante."
+   "image": "lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente roulée dans sa housse orange sanglée dessus, sac de couchage dans sa housse bleue, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante."
   },
   {
    "n": 43,
@@ -1321,7 +1321,7 @@ window.VESPER_CH2 = {
    ],
    "brume": [
     "Dimanche. Tu te réveilles dans le sac de couchage. Il fait chaud. Une chaleur sèche, à toi, que tu as fabriquée toute la nuit avec ton propre corps.",
-    "Tu restes là un moment. Dehors, la brume presse contre la toile orange et la tente brille de l'intérieur comme une lanterne.",
+    "Tu restes là un moment. Dehors, la brume presse contre le double toit rouge et la tente brille de l'intérieur comme une lanterne.",
     "Tu bouges la tête. Le cou est raide, pas plus. L'essai est réussi.",
     "Tu sors. Tu fais ton yoga dans la neige tassée. C'est lent. Ça tient.",
     "Tobin a dormi dehors, contre le mur. La brume est sur lui, épaisse, et il ne la chasse pas.",
@@ -1336,7 +1336,7 @@ window.VESPER_CH2 = {
      "Yoga Iyengar, leçon 1 (environ 25 min)"
     ]
    },
-   "image": "tente orange montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu."
+   "image": "tente deux places à double toit rouge montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu."
   },
   {
    "n": 46,
@@ -1464,7 +1464,7 @@ window.VESPER_CH2 = {
      "Circuit gainage (9 min) : hollow body hold, levées de jambes, dead bug"
     ]
    },
-   "image": "campement au pied d'un grand pylône isolé, tente orange, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue."
+   "image": "campement au pied d'un grand pylône isolé, tente deux places à double toit rouge, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue."
   },
   {
    "n": 50,
@@ -1495,7 +1495,7 @@ window.VESPER_CH2 = {
      "Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)"
     ]
    },
-   "image": "homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente orange et une silhouette en capuche près d'un feu, aube rouge et violette."
+   "image": "homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente rouge et une silhouette en capuche près d'un feu, aube rouge et violette."
   },
   {
    "n": 51,
@@ -1631,7 +1631,7 @@ window.VESPER_CH2 = {
      "Yoga Iyengar, leçon 1 (environ 25 min)"
     ]
    },
-   "image": "homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente orange derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide."
+   "image": "homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente rouge derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide."
   }
  ]
 };

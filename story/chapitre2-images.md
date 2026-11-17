@@ -12,7 +12,7 @@ Illustration de roman graphique, style pictural cinématographique, esthétique 
 - **Le sceau du Conseil** : un cercle avec une lampe au centre et des rayons courbes.
 
 ## Fiche des objets (le Fardeau)
-Les mêmes objets reviennent, toujours identiques : sac à dos de toile grise à armature métallique avec une étiquette « M » (dès l'image 3) · vessie d'eau souple de 3 litres avec tuyau · couteau à manche de corne dans un fourreau de cuir · boussole de laiton · boîte de pêche en fer-blanc · gamelle d'aluminium cabossée accrochée à l'extérieur du sac (dès l'image 14) · trousse de premiers soins en métal blanc à croix rouge · chaise de randonnée pliante à toile verte décolorée, sanglée sur le côté du sac (dès l'image 36) · tente orange et sac de couchage en housses orange (dès l'image 39). Le sac grossit visiblement d'une semaine à l'autre.
+Les mêmes objets reviennent, toujours identiques : sac à dos de toile grise à armature métallique avec une étiquette « M » (dès l'image 3) · vessie d'eau souple de 3 litres avec tuyau · couteau à manche de corne dans un fourreau de cuir · boussole de laiton · boîte de pêche en fer-blanc · gamelle d'aluminium cabossée accrochée à l'extérieur du sac (dès l'image 14) · trousse de premiers soins en métal blanc à croix rouge · chaise de randonnée pliante à toile verte décolorée, sanglée sur le côté du sac (dès l'image 36) · tente de randonnée deux places à arceaux croisés et double toit rouge, rangée dans une housse orange, et sac de couchage dans une housse bleue (dès l'image 39 ; ce sont les vrais objets de Nicolas). Le sac grossit visiblement d'une semaine à l'autre.
 
 ---
 
@@ -141,16 +141,16 @@ butte sous un pylône, ciel d'orage jaune sale à l'ouest et gris de plomb au-de
 deux hommes qui marchent vite contre le vent sous les pylônes, câbles qui claquent, premiers flocons à l'horizontale, au loin un poste de relais bas en béton à toit plat entre trois pylônes, ciel de tempête jaune et plomb, impression d'urgence.
 
 **Image 39 · Le magasin**
-intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renversée, magasin avec étagères de bobines de câble, isolateurs et casques, homme au chandail gris qui serre contre lui deux housses de toile orange, l'une longue contenant une tente, l'autre ronde d'où déborde un sac de couchage, neige qui entre par le toit crevé.
+intérieur d'un poste de relais à moitié effondré, poutrelle d'acier renversée, magasin avec étagères de bobines de câble, isolateurs et casques, homme au chandail gris qui serre contre lui deux housses, l'une longue et orange contenant une tente, l'autre ronde et bleue contenant un sac de couchage, neige qui entre par le toit crevé.
 
 **Image 40 · Tenir les arceaux**
-intérieur d'une tente orange à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.
+intérieur d'une tente de randonnée deux places à arceaux croisés, double toit rouge, à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.
 
 **Image 41 · Le câble**
 grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente orange au fond.
 
 **Image 42 · Tout**
-lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente orange sanglée dessus, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante.
+lendemain de tempête, paysage blanc étincelant, homme au chandail gris qui soulève un gros sac à dos gris entièrement chargé, tente roulée dans sa housse orange sanglée dessus, sac de couchage dans sa housse bleue, chaise repliée sur le côté, gamelle accrochée, devant un poste de relais enneigé, homme en capuche à côté d'une caisse d'isolateurs, lumière orange éclatante.
 
 **Image 43 · Trois mots**
 sortie d'un poste de relais enneigé, homme au chandail gris essoufflé debout près d'un long mât de bois goudronné qu'il vient de basculer dans un fossé, il regarde un homme en capuche assis sur une chaise de randonnée verte qui fixe ses propres mains, silence, lumière froide cyan et magenta.
@@ -159,7 +159,7 @@ sortie d'un poste de relais enneigé, homme au chandail gris essoufflé debout p
 homme au chandail gris avec un gros sac à dos chargé, arrêté sur un sentier enneigé sous les pylônes, il tient levée une gamelle d'aluminium où se reflètent huit petites lumières blanches alignées, homme en capuche qui arrive sur sa perche en haussant un sourcil, lumière magenta de fin de jour.
 
 **Image 45 · La première nuit chaude**
-tente orange montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu.
+tente deux places à double toit rouge montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu.
 
 ## Semaine 6 · Ne te retourne pas
 
@@ -173,10 +173,10 @@ deux hommes qui marchent côte à côte sur un sentier large entre des pylônes 
 gorge profonde avec un torrent gelé au fond, passerelle de câbles d'acier où manquent la moitié des planches, au premier plan homme au chandail gris avec un gros sac à dos qui regarde fixement devant lui poings serrés, derrière lui sur la passerelle homme en capuche qui traverse péniblement, pylônes de part et d'autre, lumière cyan.
 
 **Image 49 · Les trois fois**
-campement au pied d'un grand pylône isolé, tente orange, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue.
+campement au pied d'un grand pylône isolé, tente deux places à double toit rouge, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue.
 
 **Image 50 · Le pire guide**
-homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente orange et une silhouette en capuche près d'un feu, aube rouge et violette.
+homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente rouge et une silhouette en capuche près d'un feu, aube rouge et violette.
 
 **Image 51 · L'encre**
 nuit sous les derniers pylônes, lueur blanche inquiétante qui éclaire le dessous des câbles depuis l'arrière, homme en capuche qui montre un carnet où est dessiné un poignet tamponné relié par des traits à des câbles et à des points, homme au chandail gris avec deux sacs, un sur le dos et un sur le ventre, lumière blanche et cyan.
@@ -188,5 +188,5 @@ dernier pylône à la lisière de la forêt, homme en capuche qui tient une lant
 homme seul au chandail gris avec un gros sac à dos chargé qui marche dans une plaine enneigée vers une ligne brillante à l'horizon, vu de face, visage tendu, yeux fixés devant, très loin derrière lui la lisière de la forêt de pylônes et un minuscule point de lumière cyan qui s'éloigne vers le nord, ciel orange et violet.
 
 **Image 54 · Va**
-homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente orange derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide.
+homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente rouge derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide.
 
