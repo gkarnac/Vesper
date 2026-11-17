@@ -1443,7 +1443,7 @@ Tu ris dans le noir. Demain, elle reviendra. Cette nuit, tu as tenu contre quelq
 > Physio : flexion de hanche (14 min)
 > Circuit gainage (9 min) : hollow body hold, levées de jambes, dead bug
 
-*Image : intérieur d'une tente de randonnée deux places à arceaux croisés, double toit rouge, à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.*
+*Image : intérieur d'une tente de randonnée deux places à arceaux croisés, double toit beige sable, à moitié couchée par le vent dans une salle de béton, deux hommes allongés tête-bêche sur le dos qui tiennent les arceaux à bout de bras, coins de la tente lestés par des isolateurs de porcelaine, neige qui tourbillonne par un mur éventré, lanterne cyan.*
 
 ### Scène 41 — Le câble
 **Nette**
@@ -1483,7 +1483,7 @@ Tu reprends ta forme. Demain, il y en aura mille autres, intacts, pleins d'or. M
 > Muk Yan Jong, Tam Lai (12 min)
 > Baat Jaam Do, Tam Lai (7 min)
 
-*Image : grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente à double toit rouge au fond.*
+*Image : grande salle de béton d'un relais pendant une tempête, homme au chandail gris figé avec deux couteaux de bois levés devant un pilier cerclé de fer, par la porte ouverte un énorme câble d'acier tressé vient de tomber dans une gerbe de neige, homme en capuche qui hausse les épaules, tente à double toit beige sable au fond.*
 
 ### Scène 42 — Tout
 **Nette**
@@ -1631,7 +1631,7 @@ Tu ne sais pas si ça veut dire zéro, ou trop pour compter. Tu manges ton riz. 
 **Brume**
 Dimanche. Tu te réveilles dans le sac de couchage. Il fait chaud. Une chaleur sèche, à toi, que tu as fabriquée toute la nuit avec ton propre corps.
 
-Tu restes là un moment. Dehors, la brume presse contre le double toit rouge et la tente brille de l'intérieur comme une lanterne.
+Tu restes là un moment. Dehors, la brume presse contre le double toit beige sable et la tente brille de l'intérieur comme une lanterne.
 
 Tu bouges la tête. Le cou est raide, pas plus. L'essai est réussi.
 
@@ -1650,7 +1650,7 @@ La brume te dit de ne plus demander. Que ça fait mal pour rien. Tu manges ton r
 > **PASSAGE 45 · Le verdict du cou**
 > Yoga Iyengar, leçon 1 (environ 25 min)
 
-*Image : tente deux places à double toit rouge montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu.*
+*Image : tente deux places à double toit beige sable montée dans la neige devant un poste de relais, lumière chaude à l'intérieur, homme au chandail gris assis à l'entrée avec une gamelle de riz, à côté contre le mur de béton homme en capuche sous des couvertures qui lève une main fermée, matin d'hiver rose et bleu.*
 
 ---
 
@@ -1815,7 +1815,7 @@ Tu refermes le carnet. Tu le lui rends. Tes mains tremblent. Tu retournes à ta 
 > Physio : flexion de hanche (14 min)
 > Circuit gainage (9 min) : hollow body hold, levées de jambes, dead bug
 
-*Image : campement au pied d'un grand pylône isolé, tente deux places à double toit rouge, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue.*
+*Image : campement au pied d'un grand pylône isolé, tente deux places à double toit beige sable, homme en capuche assis sur une chaise de randonnée qui tend un carnet ouvert, sur la page trois croquis répétés d'un petit bonhomme qui en porte un autre sur son dos vers une ville, homme au chandail gris à genoux qui regarde la page, lanterne cyan, nuit bleue.*
 
 ### Scène 50 — Le pire guide
 **Nette**
@@ -1853,7 +1853,7 @@ Au campement, il a fait le riz. Tu manges. Vous ne dites rien.
 > Muk Yan Jong, Tam Lai (12 min)
 > Baat Jaam Do, Tam Lai (7 min) · Baat Jaam Do, Ip Man (7 min)
 
-*Image : homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente rouge et une silhouette en capuche près d'un feu, aube rouge et violette.*
+*Image : homme au chandail gris en nage, bras ballants, debout devant le pied d'un pylône dans un cercle de neige piétinée, deux couteaux de bois dans les mains, vapeur qui monte de ses épaules, au loin la tente beige sable et une silhouette en capuche près d'un feu, aube rouge et violette.*
 
 ### Scène 51 — L'encre
 **Nette**
@@ -2032,7 +2032,7 @@ Tu refermes le carnet. Tu regardes devant.
 > **PASSAGE 54 · Le bord de la plaine**
 > Yoga Iyengar, leçon 1 (environ 25 min)
 
-*Image : homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente rouge derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide.*
+*Image : homme au chandail gris assis dans une chaise de randonnée verte au bord d'une plaine enneigée, face à de vastes étendues plates et brillantes comme du verre qui reflètent le ciel, tente beige sable derrière lui, il tient un carnet ouvert sur une page où sont tracées en grandes lettres maladroites les lettres VA, morceau de carte jauni collé sur la page voisine, aube claire et froide.*
 
 ---
 
