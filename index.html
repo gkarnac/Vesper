@@ -148,10 +148,11 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script src="story/chapitre1.js"></script>
 <script src="story/chapitre2.js"></script>
 <script src="story/chapitre3.js"></script>
+<script src="story/chapitre4.js"></script>
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '22 nov. 15 h 30';
+const APP_VERSION = '22 nov. 17 h 30';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -159,7 +160,7 @@ const START = '2026-11-09';          // début du niveau 0 (même départ que Ma
 const SOBRE_HAB_ID = 'sobre-jour';
 const MOTS_ALCOOL = ['bière','biere','vin','alcool','cidre','fort','scotch','whisky','vodka','rhum','gin','cocktail'];
 // Chapitres enchaînés : la scène globale g (1, 2, 3…) avance d'une scène par séance complétée.
-const CHAPS = [window.VESPER_CH0, window.VESPER_CH1, window.VESPER_CH2, window.VESPER_CH3].filter(Boolean);
+const CHAPS = [window.VESPER_CH0, window.VESPER_CH1, window.VESPER_CH2, window.VESPER_CH3, window.VESPER_CH4].filter(Boolean);
 const TOTAL = CHAPS.reduce((a, c) => a + c.scenes.length, 0);
 function loc(g) {
   let k = g;
@@ -273,13 +274,41 @@ function descN3(w) {
     'Rando ' + KM3[w] + ' km · sac de ' + SAC3[w] + ' lb' + (DP3[w] ? ' · ' + DP3[w] + ' m D+' : '') + ' + Luk Dim Boon Kwan',
     w >= 4 ? '2e jour · rando 12 km, sac de ' + J2_SAC3[w] + ' lb + yoga le soir' : 'Yoga Iyengar · leçon 1'];
 }
-const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : L.c.id === 1 ? passageN1(L.n) : L.c.id === 2 ? passageN2(L.n) : passageN3(L.n); };
+// ───────────────────── PASSAGES (niveau 4 · Spécifique WCT) ─────────────────────
+// Huit semaines, week-ends de deux jours. Plafond : 20 km et 8 h par sortie.
+const SAC4 = ['30', '30', '35', '30', '35', '35', '45', '45'], KM4 = [18, 20, 20, 12, 20, 20, 20, 20], DP4 = [600, 600, 600, 0, 800, 800, 800, 800];
+const J2_KM4 = [12, 15, 15, 0, 18, 20, 20, 20], J2_SAC4 = ['30', '30', '30', '', '35', '35', '45', '45'];
+const ESCALIERS = tm('Escaliers avec le sac', 1200, 'Sac de la semaine · montée et descente régulières · rampe si besoin');
+function passageN4(n) {
+  const w = Math.min(7, Math.floor((n - 1) / 9)), p = (n - 1) % 9, pair = w % 2 === 1;
+  switch (p) {
+    case 0: return { type: 'Spécifique WCT — Formes', steps: [WARM, ps(30), FORME('Siu Lim Tao'), ps(20), FORME('Chum Kiu'), ps(20), FORME('Biu Jee'), ps(30), PHA] };
+    case 1: return { type: 'Spécifique WCT — Marche Z2', steps: [marcheZ2(45), ps(30), mp('cervical-circuit.mp3', 'Circuit cervical', 310)] };
+    case 2: return { type: 'Spécifique WCT — Force A', steps: [WARM, ps(30), KICK, ps(30), PUSHPULL, ps(30), COIFFE] };
+    case 3: return { type: 'Spécifique WCT — Physio B + Gainage', steps: [WARM, ps(30), PHB, ps(30), CORE] };
+    case 4: return { type: 'Spécifique WCT — Mannequin + Armes', steps: [WARM, ps(30), tm('Muk Yan Jong — Tam Lai', 720, 'Forme complète'), ps(20), FORME('Baat Jaam Do')]
+                       .concat(pair ? [ps(20), tm('Baat Jaam Do — Ip Man', 420, 'Forme complète')] : []) };
+    case 5: return { type: 'Spécifique WCT — Escaliers + Marche Z2', steps: [ESCALIERS, ps(60), marcheZ2(30)] };
+    case 6: return { type: 'Spécifique WCT — Force B jambes', steps: [WARM, ps(30), PORTAGE, ps(30), RDL, ps(30), COIFFE, ps(30), tm('Siu Lim Tao — ' + (pair ? 'Chan Wah Shun' : 'Ip Man'), 420, 'Forme complète')] };
+    case 7: return { type: 'Spécifique WCT — Rando avec sac', steps: [tm('Rando — ' + KM4[w] + ' km · sac de ' + SAC4[w] + ' lb' + (DP4[w] ? ' · ' + DP4[w] + ' m D+' : ''), dureeRando(KM4[w], DP4[w]), 'Environ 3 km/h · 8 h au maximum' + (w === 3 ? ' · semaine de décharge' : w === 7 ? ' · test 1 : note la récupération' : ' · 1er jour')), ps(60), tm('Luk Dim Boon Kwan — Tam Lai', 600, 'Léger, après la rando')] };
+    default:
+      if (w !== 3) return { type: 'Spécifique WCT — 2e jour de rando', steps: [tm('Rando — ' + J2_KM4[w] + ' km · sac de ' + J2_SAC4[w] + ' lb', dureeRando(J2_KM4[w], 0), '2e jour de suite · environ 3 km/h' + (w === 7 ? ' · test 2 : note la douleur et la récupération du lendemain' : ' · note la récupération')), ps(60), mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1 (le soir)', 1487)] };
+      return { type: 'Yoga — Iyengar Leçon 1', steps: [mp('dimanche-yoga.mp3', 'Yoga Iyengar — Leçon 1', 1487)] };
+  }
+}
+function descN4(w) {
+  return ['Formes Tam Lai + physio A', 'Marche Z2 45 min + circuit cervical', 'Force A · pompes, tirages, coiffe', 'Physio B + circuit gainage',
+    'Muk Yan Jong + Baat Jaam Do', 'Escaliers avec le sac + marche Z2 30 min', 'Force B · montées sur boîte avec le sac + Siu Lim Tao ' + (w % 2 ? 'Chan Wah Shun' : 'Ip Man'),
+    'Rando ' + KM4[w] + ' km · sac de ' + SAC4[w] + ' lb' + (DP4[w] ? ' · ' + DP4[w] + ' m D+' : '') + ' + Luk Dim Boon Kwan',
+    w !== 3 ? '2e jour · rando ' + J2_KM4[w] + ' km, sac de ' + J2_SAC4[w] + ' lb + yoga le soir' : 'Yoga Iyengar · leçon 1'];
+}
+const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : L.c.id === 1 ? passageN1(L.n) : L.c.id === 2 ? passageN2(L.n) : L.c.id === 3 ? passageN3(L.n) : passageN4(L.n); };
 function descN1(w) {
   return ['Formes Tam Lai + physio A', 'Marche Z2 ' + Z2[w] + ' min + circuit cervical', 'Force A · pompes, tirages, coiffe', 'Physio B + circuit gainage',
     'Muk Yan Jong + Baat Jaam Do', 'Marche Z2 ' + Z2[w] + ' min + retour au calme', 'Force B + Siu Lim Tao ' + (w % 2 ? 'Chan Wah Shun' : 'Ip Man'),
     'Rando ' + RANDO[w] + ' km + Luk Dim Boon Kwan', 'Yoga Iyengar · leçon 1'];
 }
-function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); const w = Math.floor((L.n - 1) / 9); return L.c.id === 0 ? DESC : L.c.id === 1 ? descN1(Math.min(3, w)) : L.c.id === 2 ? descN2(Math.min(5, w)) : descN3(Math.min(6, w)); }
+function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); const w = Math.floor((L.n - 1) / 9); return L.c.id === 0 ? DESC : L.c.id === 1 ? descN1(Math.min(3, w)) : L.c.id === 2 ? descN2(Math.min(5, w)) : L.c.id === 3 ? descN3(Math.min(6, w)) : descN4(Math.min(7, w)); }
 // Semaine type du niveau 0 (même programme que Ma Vie). p = index du passage (0-8) ; sinon libre.
 const DESC = ['Formes · Siu Lim Tao, kicks, physio', 'Marche 30 min + circuit cervical', 'Physio B · flexion de hanche', 'Formes · Chum Kiu, Biu Jee',
   'Physio B + circuit gainage', 'Marche 35 min + retour au calme', 'Formes + armes (Baat Jaam Do)', 'Marche longue 40 min', 'Yoga Iyengar · leçon 1'];
@@ -388,11 +417,12 @@ function seancesFaites() {
 function prochaineScene() { return Math.min(seancesFaites() + 1, TOTAL + 1); }
 // Version de la scène : « Nette » si la cible de jours sans alcool du niveau est atteinte sur les 7 derniers jours, sinon « Brume ».
 // Jours sans alcool requis sur 7 pour la version Nette, par chapitre (cible du niveau).
-const CLAIR_MIN = { 0: 2, 1: 4, 2: 5, 3: 5 };
+const CLAIR_MIN = { 0: 2, 1: 4, 2: 5, 3: 5, 4: 6 };
 const FIN = { 0: 'Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.',
               1: 'Tu as traversé le Long Noir, et Tobin marche avec toi. La suite — la Forêt de pylônes — arrive bientôt.',
               2: 'Tu es sorti de la forêt sans te retourner. La suite — les Marais de verre — arrive bientôt.',
-              3: 'Tu as traversé les Marais de verre sans regarder dedans. Ilse marche vers le sud. La suite — le Col des Cendres — arrive bientôt.' };
+              3: 'Tu as traversé les Marais de verre sans regarder dedans. Ilse marche vers le sud. La suite — le Col des Cendres — arrive bientôt.',
+              4: 'Tu as posé le sac au pied du phare, et personne ne l\'a pris. La lanterne éclaire l\'autre rivage. La suite arrive bientôt.' };
 function joursSobres7() { const set = joursSobres(), d = new Date(today() + 'T12:00:00'); let c = 0; for (let i = 0; i < 7; i++) { if (set.has(localDateStr(d))) c++; d.setDate(d.getDate() - 1); } return c; }
 const versionNette = g => joursSobres7() >= (CLAIR_MIN[loc(g).c.id] || 5);
 function joursAlcoolJournal() {
