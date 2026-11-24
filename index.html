@@ -150,10 +150,11 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script src="story/chapitre3.js"></script>
 <script src="story/chapitre4.js"></script>
 <script src="story/chapitre5.js"></script>
+<script src="story/chapitre6.js"></script>
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '23 nov. 18 h 50';
+const APP_VERSION = '23 nov. 19 h 30';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -161,13 +162,14 @@ const START = '2026-11-09';          // début du niveau 0 (même départ que Ma
 const SOBRE_HAB_ID = 'sobre-jour';
 const MOTS_ALCOOL = ['bière','biere','vin','alcool','cidre','fort','scotch','whisky','vodka','rhum','gin','cocktail'];
 // Chapitres enchaînés : la scène globale g (1, 2, 3…) avance d'une scène par séance complétée.
-const CHAPS = [window.VESPER_CH0, window.VESPER_CH1, window.VESPER_CH2, window.VESPER_CH3, window.VESPER_CH4, window.VESPER_CH5].filter(Boolean);
+const CHAPS = [window.VESPER_CH0, window.VESPER_CH1, window.VESPER_CH2, window.VESPER_CH3, window.VESPER_CH4, window.VESPER_CH5, window.VESPER_CH6].filter(Boolean);
 const TOTAL = CHAPS.reduce((a, c) => a + c.scenes.length, 0);
 function loc(g) {
   let k = g;
   for (const c of CHAPS) { if (k <= c.scenes.length) return { c, n: k, sc: c.scenes[k - 1] }; k -= c.scenes.length; }
   const c = CHAPS[CHAPS.length - 1]; return { c, n: c.scenes.length, sc: c.scenes[c.scenes.length - 1] };
 }
+const chapNom = c => c.id === 6 ? 'Épilogue' : 'Chapitre ' + c.id;
 function base(c) { let b = 0; for (const x of CHAPS) { if (x === c) return b; b += x.scenes.length; } return b; }
 const CACHE_KEY = 'vesper_cache_v1', PEND_KEY = 'vesper_pending_v1', LUE_KEY = 'vesper_lues_v1';
 
@@ -349,13 +351,22 @@ const PLAN5 = [
    [{ m: 'Matin', libre: 'Repos — affûtage' }, { m: 'Soir', p: 5 }], [{ m: 'Matin', p: 6 }, { m: 'Soir', libre: 'Atelier — soirée libre' }], [{ m: 'Journée', libre: 'Repos — affûtage' }],
    [{ m: 'Matin ou soir', p: 7 }]]
 ];
-const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : L.c.id === 1 ? passageN1(L.n) : L.c.id === 2 ? passageN2(L.n) : L.c.id === 3 ? passageN3(L.n) : L.c.id === 4 ? passageN4(L.n) : passageN5(L.n); };
+// ───────────────────── PASSAGES (sommet · West Coast Trail) ─────────────────────
+// Épilogue : une scène par jour de sentier, environ 10 km par jour avec le sac.
+function passageN6(n) {
+  const d = Math.min(7, n);
+  return { type: 'WCT — Jour ' + d, steps: [tm('Siu Lim Tao — Tam Lai', 420, 'Au réveil, sur le sentier'), ps(30),
+    tm('Étape ' + d + ' de la WCT — environ 10 km', dureeRando(10, 0), 'Avec le sac · environ 3 km/h, plus le temps des échelles et des marées' + (d === 7 ? ' · arrivée' : '') + ' · le soir : noter le cou et les pieds')] };
+}
+const descN6 = () => [1, 2, 3, 4, 5, 6, 7].map(d => 'Jour ' + d + ' · étape de la WCT, environ 10 km' + (d === 7 ? ' · arrivée' : ''));
+const PLAN6 = [0, 1, 2, 3, 4, 5, 6].map(p => [{ m: 'Journée', p }]);
+const passageDe = g => { const L = loc(g); return L.c.id === 0 ? PASSAGES[(L.n - 1) % 9] : L.c.id === 1 ? passageN1(L.n) : L.c.id === 2 ? passageN2(L.n) : L.c.id === 3 ? passageN3(L.n) : L.c.id === 4 ? passageN4(L.n) : L.c.id === 5 ? passageN5(L.n) : passageN6(L.n); };
 function descN1(w) {
   return ['Formes Tam Lai + physio A', 'Marche Z2 ' + Z2[w] + ' min + circuit cervical', 'Force A · pompes, tirages, coiffe', 'Physio B + circuit gainage',
     'Muk Yan Jong + Baat Jaam Do', 'Marche Z2 ' + Z2[w] + ' min + retour au calme', 'Force B + Siu Lim Tao ' + (w % 2 ? 'Chan Wah Shun' : 'Ip Man'),
     'Rando ' + RANDO[w] + ' km + Luk Dim Boon Kwan', 'Yoga Iyengar · leçon 1'];
 }
-function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); const w = Math.floor((L.n - 1) / (L.c.id === 5 ? 8 : 9)); return L.c.id === 0 ? DESC : L.c.id === 1 ? descN1(Math.min(3, w)) : L.c.id === 2 ? descN2(Math.min(5, w)) : L.c.id === 3 ? descN3(Math.min(6, w)) : L.c.id === 4 ? descN4(Math.min(7, w)) : descN5(Math.min(1, w)); }
+function descActuelle() { const L = loc(Math.min(prochaineScene(), TOTAL)); const w = Math.floor((L.n - 1) / (L.c.id === 5 ? 8 : 9)); return L.c.id === 0 ? DESC : L.c.id === 1 ? descN1(Math.min(3, w)) : L.c.id === 2 ? descN2(Math.min(5, w)) : L.c.id === 3 ? descN3(Math.min(6, w)) : L.c.id === 4 ? descN4(Math.min(7, w)) : L.c.id === 5 ? descN5(Math.min(1, w)) : descN6(); }
 // Semaine type du niveau 0 (même programme que Ma Vie). p = index du passage (0-8) ; sinon libre.
 const DESC = ['Formes · Siu Lim Tao, kicks, physio', 'Marche 30 min + circuit cervical', 'Physio B · flexion de hanche', 'Formes · Chum Kiu, Biu Jee',
   'Physio B + circuit gainage', 'Marche 35 min + retour au calme', 'Formes + armes (Baat Jaam Do)', 'Marche longue 40 min', 'Yoga Iyengar · leçon 1'];
@@ -369,7 +380,7 @@ const PLAN_SEM = [
   [{ m: 'Matin ou soir', p: 7 }],
   [{ m: 'Matin', p: 8 }, { m: 'Soir', libre: 'Atelier — soirée libre' }]
 ];
-function planSemaine() { const L = loc(Math.min(prochaineScene(), TOTAL)); return L.c.id === 5 ? PLAN5[Math.min(1, Math.floor((L.n - 1) / 8))] : PLAN_SEM; }
+function planSemaine() { const L = loc(Math.min(prochaineScene(), TOTAL)); return L.c.id === 5 ? PLAN5[Math.min(1, Math.floor((L.n - 1) / 8))] : L.c.id === 6 ? PLAN6 : PLAN_SEM; }
 const idxJour = d => (new Date(d + 'T12:00:00').getDay() + 6) % 7;
 function faitesAujourdhui() {
   const ids = new Set(); (S.wcSeances || []).forEach(x => { if (x && x.statut === 'Complété' && dstr(x.date) === today()) ids.add(x.id || Math.random()); });
@@ -465,13 +476,14 @@ function seancesFaites() {
 function prochaineScene() { return Math.min(seancesFaites() + 1, TOTAL + 1); }
 // Version de la scène : « Nette » si la cible de jours sans alcool du niveau est atteinte sur les 7 derniers jours, sinon « Brume ».
 // Jours sans alcool requis sur 7 pour la version Nette, par chapitre (cible du niveau).
-const CLAIR_MIN = { 0: 2, 1: 4, 2: 5, 3: 5, 4: 6, 5: 6 };
+const CLAIR_MIN = { 0: 2, 1: 4, 2: 5, 3: 5, 4: 6, 5: 6, 6: 6 };
 const FIN = { 0: 'Tu as franchi le dernier réverbère des Quais. La suite — le Sillon — arrive bientôt.',
               1: 'Tu as traversé le Long Noir, et Tobin marche avec toi. La suite — la Forêt de pylônes — arrive bientôt.',
               2: 'Tu es sorti de la forêt sans te retourner. La suite — les Marais de verre — arrive bientôt.',
               3: 'Tu as traversé les Marais de verre sans regarder dedans. Ilse marche vers le sud. La suite — le Col des Cendres — arrive bientôt.',
               4: 'Tu as posé le sac au pied du phare, et personne ne l\'a pris. La lanterne éclaire l\'autre rivage. La suite — Affûtage — arrive bientôt.',
-              5: 'Tu es entré dans l\'eau jusqu\'aux chevilles, et la barque t\'attend. La suite — l\'autre rivage — arrive bientôt.' };
+              5: 'Tu es entré dans l\'eau jusqu\'aux chevilles, et la barque t\'attend. La suite — l\'autre rivage — arrive bientôt.',
+              6: 'Tu es arrivé. La colonne reste vide : c\'est de la place pour demain. Fin de Vesper.' };
 function joursSobres7() { const set = joursSobres(), d = new Date(today() + 'T12:00:00'); let c = 0; for (let i = 0; i < 7; i++) { if (set.has(localDateStr(d))) c++; d.setDate(d.getDate() - 1); } return c; }
 const versionNette = g => joursSobres7() >= (CLAIR_MIN[loc(g).c.id] || 5);
 function joursAlcoolJournal() {
@@ -627,9 +639,9 @@ function vHome() {
     return '<div class="row" style="flex-wrap:nowrap;padding:5px 0"><div style="font-size:18px">' + lib + '</div><div class="row" style="flex-wrap:nowrap;gap:6px">' +
       (bu ? '<span class="mini off">alcool noté</span>' : ok ? '<span class="ok">✓ sans alcool</span>' + btnBu : btnOk + btnBu) + '</div></div>'; };
   let h = '<div class="top"><div class="logo">Vesp<i>e</i>r</div><button class="pill" id="pill" onclick="sync()">SYNC</button></div>';
-  h += '<div class="kicker">Chapitre ' + CH.id + ' · ' + esc(CH.titre) + '</div>';
+  h += '<div class="kicker">' + chapNom(CH) + ' · ' + esc(CH.titre) + '</div>';
   h += artHtml(cur);
-  h += '<div class="wrap"><h1 class="title">' + (fini ? 'Fin du chapitre ' + CH.id : 'Scène ' + L.n + ' · ' + esc(sc.titre)) + '</h1>';
+  h += '<div class="wrap"><h1 class="title">' + (fini ? (CH.id === 6 ? 'Fin de Vesper' : 'Fin du chapitre ' + CH.id) : 'Scène ' + L.n + ' · ' + esc(sc.titre)) + '</h1>';
   h += '<div class="sub">' + faitsCh + ' / ' + tot + ' scènes accomplies</div>';
   h += fini ? '<p style="font-size:19px;margin-top:14px;color:var(--txt2)">' + (FIN[CH.id] || 'La suite arrive bientôt.') + '</p>'
             : '<button class="btn" onclick="go(\'read\',' + cur + ')">Continuer l\'histoire</button>';
@@ -641,7 +653,7 @@ function vHome() {
   h += '<div class="card"><h3>Scènes · chapitre ' + CH.id + '</h3><div class="list">' + CH.scenes.map(s => {
     const g = b + s.n, st = g <= faits ? 'done' : g === next ? 'cur' : 'lock';
     return '<button class="li ' + (st === 'lock' ? 'lock' : st === 'cur' ? 'cur' : '') + '" onclick="go(\'read\',' + g + ')"><span class="n">' + String(s.n).padStart(2, '0') + '</span><span class="t">' + (st === 'lock' ? '· · ·' : esc(s.titre)) + '</span>' + (st === 'done' ? '<span class="c">✓</span>' : '') + '</button>'; }).join('') + '</div>' +
-       CHAPS.filter(c => c !== CH && base(c) < faits).map(c => '<button class="mini off" style="margin-top:10px" onclick="go(\'read\',' + (base(c) + 1) + ')">Relire le chapitre ' + c.id + ' · ' + esc(c.titre) + '</button>').join(' ') + '</div>';
+       CHAPS.filter(c => c !== CH && base(c) < faits).map(c => '<button class="mini off" style="margin-top:10px" onclick="go(\'read\',' + (base(c) + 1) + ')">Relire · ' + chapNom(c) + ' · ' + esc(c.titre) + '</button>').join(' ') + '</div>';
   h += '<div class="foot">version ' + APP_VERSION + ' · ' + (S.wcSeances || []).length + ' séances lues' + (S.pending.length ? ' · ' + S.pending.length + ' en attente d\'envoi' : '') +
        '<br><a href="' + MA_VIE_URL + '">Ouvrir Ma Vie</a></div></div>';
   return h;
@@ -653,7 +665,7 @@ function vRead() {
   const p = sc.passage, pa = passageDe(n);
   let h = '<div class="nav"><button onclick="go(\'home\')">‹ Accueil</button><button id="pill" class="pill" style="border:none;background:none" onclick="sync()"></button></div>';
   h += artHtml(n);
-  h += '<div class="story"><div class="meta">Chapitre ' + CH.id + ' · Scène ' + L.n + ' / ' + CH.scenes.length + (brume ? ' · Brume' : '') + '</div><h2>' + esc(sc.titre) + '</h2>' +
+  h += '<div class="story"><div class="meta">' + chapNom(CH) + ' · Scène ' + L.n + ' / ' + CH.scenes.length + (brume ? ' · Brume' : '') + '</div><h2>' + esc(sc.titre) + '</h2>' +
        '<div class="row" id="narr-bar" style="margin:-8px 0 16px;gap:8px;position:relative;z-index:2"><button class="mini" id="narr-btn" onclick="narrToggle()">▶ Écouter</button>' +
        '<label class="sub" style="display:flex;align-items:center;gap:6px"><input type="checkbox" ' + (narrAuto() ? 'checked' : '') + ' onchange="narrSetAuto(this.checked)"> lecture auto</label></div>';
   h += paras.map((t, i) => '<p style="animation-delay:' + (0.3 + i * 0.9) + 's">' + esc(t) + '</p>').join('') + '</div>';
