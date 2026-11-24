@@ -154,7 +154,7 @@ h1.title{font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.1;mar
 <script>
 'use strict';
 // ───────────────────────── CONFIG ─────────────────────────
-const APP_VERSION = '23 nov. 20 h 00';
+const APP_VERSION = '23 nov. 21 h 00';
 const API = 'https://script.google.com/macros/s/AKfycbx49E1O2B0xSnjkFEh2TbCsn6rDSMFkiqoWRTWkRXWTMXL-Y_BmLOsrxjKHqb9KBrjeGg/exec';
 const MP3_BASE = 'https://gkarnac.github.io/ma-vie/';   // narrations des séances, hébergées avec Ma Vie
 const MA_VIE_URL = 'https://gkarnac.github.io/ma-vie/';
@@ -650,10 +650,11 @@ function vHome() {
   h += '<div class="card"><h3>Clarté · jours sans alcool</h3><div class="row"><div style="font-size:20px">Série : ' + serie + ' jour' + (serie > 1 ? 's' : '') + '</div><div class="sub">' + clarte + ' / ' + CLARTE_MAX + '</div></div>' +
        '<div class="bar"><div style="width:' + (clarte / CLARTE_MAX * 100) + '%"></div></div>' +
        '<div style="margin-top:8px">' + sob(hier) + sob(td) + '</div></div>';
-  h += '<div class="card"><h3>Scènes · chapitre ' + CH.id + '</h3><div class="list">' + CH.scenes.map(s => {
+  h += '<div class="card"><h3>Scènes · ' + chapNom(CH).toLowerCase() + '</h3><div class="list">' + CH.scenes.map(s => {
     const g = b + s.n, st = g <= faits ? 'done' : g === next ? 'cur' : 'lock';
     return '<button class="li ' + (st === 'lock' ? 'lock' : st === 'cur' ? 'cur' : '') + '" onclick="go(\'read\',' + g + ')"><span class="n">' + String(s.n).padStart(2, '0') + '</span><span class="t">' + (st === 'lock' ? '· · ·' : esc(s.titre)) + '</span>' + (st === 'done' ? '<span class="c">✓</span>' : '') + '</button>'; }).join('') + '</div>' +
        CHAPS.filter(c => c !== CH && base(c) < faits).map(c => '<button class="mini off" style="margin-top:10px" onclick="go(\'read\',' + (base(c) + 1) + ')">Relire · ' + chapNom(c) + ' · ' + esc(c.titre) + '</button>').join(' ') + '</div>';
+  if (CH.id >= 5) h += carteHorsLigne();
   h += '<div class="foot">version ' + APP_VERSION + ' · ' + (S.wcSeances || []).length + ' séances lues' + (S.pending.length ? ' · ' + S.pending.length + ' en attente d\'envoi' : '') +
        '<br><a href="' + MA_VIE_URL + '">Ouvrir Ma Vie</a></div></div>';
   return h;
@@ -782,12 +783,59 @@ async function terminer(sansSuivi) {
   go(next <= TOTAL ? 'read' : 'home', next <= TOTAL ? next : 0);
 }
 
+
+// ───────────────────────── HORS LIGNE (sentier) ─────────────────────────
+// L'épilogue se vit sur la WCT, sans réseau : on garde l'appli, les histoires, les images et les narrations de l'épilogue sur le téléphone.
+// Les séances et les jours sans alcool notés sans réseau restent en attente et partent au retour du réseau (file « en attente d'envoi »).
+const OFF_CACHE = 'vesper-offline-v1';
+function fichiersHorsLigne() {
+  const f = ['./', './index.html', './manifest.json', './icons/icon-192.png?v=2', './icons/icon-512.png?v=2'];
+  for (let i = 0; i <= 6; i++) f.push('./story/chapitre' + i + '.js');
+  const ep = CHAPS.find(c => c.id === 6);
+  if (ep) ep.scenes.forEach(x => { const nn = String(x.n).padStart(2, '0');
+    f.push('./images/ch6/s' + nn + '.jpg', './audio/ch6/s' + nn + '-nette.mp3', './audio/ch6/s' + nn + '-brume.mp3'); });
+  return f;
+}
+async function etatHorsLigne() {
+  if (!('caches' in window)) { S.offline = { ok: false, n: 0, tot: 0, absent: true }; return; }
+  const c = await caches.open(OFF_CACHE), f = fichiersHorsLigne(); let n = 0;
+  for (const u of f) if (await c.match(new URL(u, location.href).href, { ignoreSearch: false })) n++;
+  S.offline = { ok: n === f.length, n, tot: f.length };
+  if (S.view === 'home') render();
+}
+async function preparerHorsLigne() {
+  if (!('caches' in window)) { toast('Ce navigateur ne permet pas le hors-ligne'); return; }
+  if (S.offPrep) return; S.offPrep = true;
+  const c = await caches.open(OFF_CACHE), f = fichiersHorsLigne(); let n = 0, rate = 0;
+  for (const u of f) {
+    try { const r = await fetch(u, { cache: 'reload' }); if (r.ok) { await c.put(new URL(u, location.href).href, r); n++; } else rate++; } catch (e) { rate++; }
+    S.offline = { ok: false, n, tot: f.length, prep: true }; if (S.view === 'home') render();
+  }
+  S.offPrep = false;
+  try { if (navigator.storage && navigator.storage.persist) await navigator.storage.persist(); } catch (e) {}
+  await etatHorsLigne();
+  toast(rate ? rate + ' fichier(s) non téléchargé(s) — réessaie avec du réseau' : 'Épilogue prêt pour le sentier ✓');
+}
+function carteHorsLigne() {
+  const o = S.offline || { n: 0, tot: fichiersHorsLigne().length };
+  const etat = o.absent ? 'Ce navigateur ne permet pas le hors-ligne.'
+    : o.prep ? 'Téléchargement… ' + o.n + ' / ' + o.tot
+    : o.ok ? '✓ Prêt : l\'épilogue s\'ouvre sans réseau (texte, images, narration).'
+    : 'Pas encore prêt (' + o.n + ' / ' + o.tot + ' fichiers). À faire avant de partir, avec du réseau (environ 11 Mo).';
+  return '<div class="card"><h3>Hors ligne · le sentier</h3><div style="font-size:18px;line-height:1.5">' + etat + '</div>' +
+    '<div class="sub" style="margin-top:6px;line-height:1.5">Sur la WCT, coche tes journées comme d\'habitude : elles restent sur le téléphone et partent dans Ma Vie au retour du réseau.</div>' +
+    (o.ok || o.prep || o.absent ? '' : '<button class="btn" style="margin-top:10px" onclick="preparerHorsLigne()">Préparer pour le sentier</button>') +
+    (o.ok ? '<button class="mini off" style="margin-top:10px" onclick="preparerHorsLigne()">Mettre à jour</button>' : '') + '</div>';
+}
+
 // ───────────────────────── DÉMARRAGE ─────────────────────────
 (function init() {
   const c = jget(CACHE_KEY, null);
   if (c) { S.sessions = c.sessions || []; S.wcSeances = c.wcSeances || []; S.journal = c.journal || []; }
   S.pending = jget(PEND_KEY, []); S.lues = jget(LUE_KEY, {});
   render(); sync();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  etatHorsLigne();
 })();
 </script>
 </body>
